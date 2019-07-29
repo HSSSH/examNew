@@ -11,11 +11,11 @@ module.exports = {
     devServer: {
         proxy: {
             '/': {
-                target: 'http://localhost:3001',
+                target: 'http://localhost:8085',
                 autoRewrite: true,
                 ws: false
             }
         },       
-        port: 3000        
+        port: 3000
     }
 }
