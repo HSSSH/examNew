@@ -9,6 +9,8 @@ import AboutUs from '@/components/MainPage/AboutUs';
 import ContactUs from '@/components/MainPage/ContactUs';
 import ExamTable from '@/components/MainPage/ExamTable';
 import DoTest from '@/components/DoTest';
+import RestPage from '@/components/RestPage';
+import TestResult from '@/components/TestResult';
 Vue.use(Router);
 
 export default new Router({
@@ -51,9 +53,17 @@ export default new Router({
                 component: ExamTable,
             }],
         },{
-          path: 'doTest',
+          path: 'doTest/:examId',
           name: 'DoTest',
           component: DoTest
+        },{
+          path: 'restPage/:examId',
+          name: 'RestPage',
+          component: RestPage
+        },{
+          path: 'testResult/:result/:totalScore',
+          name: 'TestResult',
+          component: TestResult
         }]
     }]
 });

@@ -26,7 +26,7 @@ export default {
   },
   methods: {
     startTest(item){
-      // this.$router.push({path: path})
+      this.$router.push({path: '/app/doTest/'+item.id})
     },
     clearStorage(item){
       localStorage.removeItem('testPaper' + item.id);

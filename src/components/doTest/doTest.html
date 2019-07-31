@@ -1,0 +1,110 @@
+<div class="exam">
+        <div class="top-part">
+            <div>
+                <button class="quit-bt" @click="quitTest">放弃</button>
+            </div>
+            <div>
+                <label>模块{{paper.currentSection}}</label>
+                <i class="split-line"></i>
+                <label>{{paper.questions[paper.currentQuestion].correctNum > 1?'多选题':'单选题'}}</label>
+            </div>
+            <div class="time-count">
+                <span>考试时间:</span><br/>
+                <span v-show="data.noBlink">{{leftTimeSec}}</span>
+            </div>
+            <div class="mark-flag">
+                <div v-if="paper.currentSection == 3">
+                    <img src="@/images/doTest/calculate.png" @click="data.showCalculator = !data.showCalculator"><br/>
+                    <span>计算器</span>
+                </div>
+                <div v-if="paper.currentSection == 3">
+                    <img src="@/images/doTest/mark-pen.png"><br/>
+                    <span>记号笔</span>
+                </div>
+                <div>
+                    <img :src="'../../images/doTest/'+(paper.questions[paper.currentQuestion].flag?'flag2-choose.png':'flag2.png')" @click="paper.questions[paper.currentQuestion].flag = !paper.questions[paper.currentQuestion].flag"><br/>
+                    <span :style="{'color':paper.questions[paper.currentQuestion].flag?'#f39f00':'#ffffff'}">标记&nbsp;&nbsp;</span>
+                </div>
+            </div>
+            <div class="answer-list" :class="{'openCard':data.cardOpen}">
+                <div>
+                    答题卡<br/>
+                    <span></span>
+                </div>
+                <div>
+                    <p style="background: white;color: black;border: solid 1px black">未做题</p>
+                    <p style="background: #4EB9E3;color: white;border: solid 1px #1C7CA2">已回答</p>
+                    <p style="background: #F39B77;color: white;border: solid 1px black">标记</p>
+                </div>
+                <div class="answer-card">
+                    <p>模块{{paper.currentSection}}</p>
+                    <button v-for="(item,index) in paper.questions" v-show="paper.currentSection == item.section || paper.currentSection == item.section * -1" @click="changePage(index)"
+                            :class="{'hasAns':(paper.questions[index].ans != null && paper.questions[index].ans != ''),'flagColor':paper.questions[index].flag}">
+                        {{index - paper.indexRange[paper.currentSection - 1].min + 1}}
+                    </button>
+                    <div>
+                        <button @click="submitAnswer()">提交答案</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="material-part" v-if="paper.currentSection == 3">
+            <div class="triangle-top"><span>材</span><span>料</span></div>
+            <div style="overflow: auto">
+                <div v-html="paper.sections[paper.currentSection - 1].material" class="material-html"></div>
+            </div>
+        </div>
+        <div class="scroll-part" :class="{'halfScreen':paper.currentSection == 3}">
+            <div style="overflow: auto">
+                <div class="progress-part">
+                    <span>答题进度</span>
+                    <div>
+                        <div></div>
+                        <div :style="{'width':completePercent + '%'}"></div>
+                        <i></i>
+                        <i></i>
+                        <i :style="{'left':completePercent + '%'}"></i>
+                        <i class="flag-signal" v-for="(item,index) in paper.questions" v-if="(paper.currentSection == item.section || paper.currentSection == item.section * -1) && paper.questions[index].flag"
+                            :style="{'left':'calc(' + 100*(index - paper.indexRange[paper.currentSection - 1].min + 1)/(paper.indexRange[paper.currentSection - 1].max - paper.indexRange[paper.currentSection - 1].min + 1) + '% + 4px)'}"
+                            @click="changePage(index)">
+                        </i>
+                        <span :style="{'left':'calc(' + completePercent + '% - 7px)'}">{{completePercent}}%</span>
+                    </div>
+                    <span>{{paper.currentQuestion - paper.indexRange[paper.currentSection - 1].min + 1}}/{{paper.indexRange[paper.currentSection - 1].max - paper.indexRange[paper.currentSection - 1].min + 1}}</span>
+                </div>
+                <div class="content-part">
+                    <div class="question-area">
+                        <div class="triangle-top"><span>#{{paper.currentQuestion - paper.indexRange[paper.currentSection - 1].min + 1}}</span></div>
+                        <div class="question-html">
+                            <div v-html="paper.questions[paper.currentQuestion].content" class="content-html"></div>
+                        </div>
+                    </div>
+                    <!-- <div largest-container signal="paper.currentQuestion"> -->
+                    <div>
+                        <div class="answer-area" v-for="answer in paper.questions[paper.currentQuestion].options" @click="chooseCorrect(answer,paper.questions[paper.currentQuestion].options)">
+                            <div :class="{'correct':answer.choose}">
+                                <i :class="{'multiChooseType':paper.questions[paper.currentQuestion].correctNum > 1}">
+                                    <img src="@/images/doTest/tick-up.png" v-if="answer.choose">
+                                </i>
+                                <label>{{allOptionList[answer.oindex]}}</label>
+                            </div>
+                            <!-- <div v-html="answer.content" class="answer-html transparent"> -->
+                            <div v-html="answer.content" class="answer-html">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="page-part">
+                    <button @click="changePage(paper.currentQuestion - 1)">
+                        <span id="preLeft"><img src="@/images/doTest/pre.png"></span>
+                        <label>上一题</label>
+                    </button>
+                    <button @click="changePage(paper.currentQuestion + 1,'',$event)">
+                        <label>{{paper.currentQuestion == paper.indexRange[paper.currentSection - 1].max?'提交':'下一题'}}</label>
+                        <span id="nextRight"><img src="@/images/doTest/next.png"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="move-calc" v-show="data.showCalculator" v-include="'partials/dialogWindow/calculator.html'"></div> -->
+</div>
