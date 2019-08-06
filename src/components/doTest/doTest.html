@@ -81,7 +81,7 @@
                     </div>
                     <!-- <div largest-container signal="paper.currentQuestion"> -->
                     <div>
-                        <div class="answer-area" v-for="answer in paper.questions[paper.currentQuestion].options" @click="chooseCorrect(answer,paper.questions[paper.currentQuestion].options)">
+                        <div class="answer-area" :style="{'height':largestHeight + 'px'}" v-for="answer in paper.questions[paper.currentQuestion].options" @click="chooseCorrect(answer,paper.questions[paper.currentQuestion].options)">
                             <div :class="{'correct':answer.choose}">
                                 <i :class="{'multiChooseType':paper.questions[paper.currentQuestion].correctNum > 1}">
                                     <img src="@/images/doTest/tick-up.png" v-if="answer.choose">
@@ -89,7 +89,7 @@
                                 <label>{{allOptionList[answer.oindex]}}</label>
                             </div>
                             <!-- <div v-html="answer.content" class="answer-html transparent"> -->
-                            <div v-html="answer.content" class="answer-html">
+                            <div v-html="answer.content" class="answer-html" ref="htmlContent">
                             </div>
                         </div>
                     </div>

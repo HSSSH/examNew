@@ -21,7 +21,7 @@ export default {
             indexRange: [{min: 0,max: 1}],
             leftTimeSec: 3600
         },          
-        completePercent: 0, //答题进度
+        largestHeight: 60
       }
     },
     created() {
@@ -30,37 +30,35 @@ export default {
         }
     },
     mounted() {
-        document.addEventListener("click", this.closeCard);
+        document.addEventListener("click",() => {this.data.cardOpen = false;});
     },
     computed: {
+        completePercent(){
+            return Math.floor(100*(this.paper.currentQuestion - this.paper.indexRange[this.paper.currentSection - 1].min + 1)/(this.paper.indexRange[this.paper.currentSection - 1].max - this.paper.indexRange[this.paper.currentSection - 1].min + 1));
+        }
     },
     methods: {
         loadPaper(paperId) {
             if(localStorage.getItem('testPaper' + paperId)){
                 this.paper = JSON.parse(localStorage.getItem('testPaper' + paperId));
-                setTimeout(() => {MathJax.Hub.Queue(["Typeset",MathJax.Hub]);},0);
+                //设置时间
                 this.leftTimeSec = this.paper.leftTimeSec;
+                //开始倒计时
+                this.interval = setInterval(()=>{
+                    this.leftTimeSec -= 1;
+                    this.paper.leftTimeSec -= 1;
+                }, 1000);
                 let ansList = this.paper.questions[this.paper.currentQuestion].ans?this.paper.questions[this.paper.currentQuestion].ans.split(','):[];
                 this.paper.questions[this.paper.currentQuestion].options.forEach(item => {
                     item.choose = ansList.indexOf(item.id) != -1;
                 })
-                this.completePercent = Math.floor(100*(this.paper.currentQuestion - this.paper.indexRange[this.paper.currentSection - 1].min + 1)/(this.paper.indexRange[this.paper.currentSection - 1].max - this.paper.indexRange[this.paper.currentSection - 1].min + 1));
-                this.closeCard();
-                this.interval = setInterval(()=>{
-                    this.paper.leftTimeSec -= 1;
-                    this.leftTimeSec -= 1;
-                }, 1000);
-                this.singleInterval = setInterval(() => {
-                    if(!this.paper.questions[this.paper.currentQuestion].usetime){
-                        this.paper.questions[this.paper.currentQuestion].usetime = 1;
-                    }
-                    else this.paper.questions[this.paper.currentQuestion].usetime++;
-                }, 1000);
+                //设置当前题目页
+                this.changePage(this.paper.currentQuestion,'first');
+                this.data.cardOpen = false;
             }
             else {
                 getPaperById(paperId).then((result) => {
                     Object.assign(this.paper,result)
-                    setTimeout(() => {MathJax.Hub.Queue(["Typeset",MathJax.Hub]);},0);
                     this.paper.currentSection = 1;
                     this.paper.currentQuestion = 0;
                     //设置题号范围
@@ -68,12 +66,13 @@ export default {
                     //设置时间
                     this.leftTimeSec = 60 * parseInt(this.paper.sectionDurations.split(',')[this.paper.currentSection - 1]);
                     this.paper.leftTimeSec = this.leftTimeSec;              //paper里面也存一份用来缓存
-                    this.changePage(0,'first');
                     //开始倒计时
                     this.interval = setInterval(() => {
-                        this.paper.leftTimeSec -= 1;
                         this.leftTimeSec -= 1;
+                        this.paper.leftTimeSec -= 1;
                     }, 1000);
+                    //设置当前题目页
+                    this.changePage(0,'first');
                 });
             }
         },
@@ -125,8 +124,13 @@ export default {
                     }, 1000);
                 }
                 this.paper.currentQuestion = page;
-                setTimeout(() => {MathJax.Hub.Queue(["Typeset",MathJax.Hub]);},0);
-                this.completePercent = Math.floor(100*(this.paper.currentQuestion - this.paper.indexRange[this.paper.currentSection - 1].min + 1)/(this.paper.indexRange[this.paper.currentSection - 1].max - this.paper.indexRange[this.paper.currentSection - 1].min + 1));
+                setTimeout(() => {
+                    MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+                    this.judgeLagestHeight((height) => {
+                        console.log(height);
+                        this.largestHeight = height > 60?height:60;
+                    })
+                },0);
             }
         },
         quitTest(){
@@ -141,14 +145,17 @@ export default {
             clearInterval(this.interval);
             clearInterval(this.singleInterval);
             if(this.paper.currentSection < this.paper.indexRange.length){
-                this.$confirm('模块'+ (this.paper.currentSection) + '结束!', '提示', {confirmButtonText: '确定',cancelButtonText: '取消',type: 'warning'}).then(() => {
-                    this.paper.currentSection++;
-                    this.leftTimeSec = 60 * parseInt(this.paper.sectionDurations.split(',')[this.paper.currentSection - 1]);
-                    this.paper.leftTimeSec = this.leftTimeSec;
-                    this.paper.currentQuestion = this.paper.indexRange[this.paper.currentSection - 1].min;
-                    localStorage.setItem('testPaper' + this.paper.id, JSON.stringify(this.paper));
-                    this.$router.push({path: '/app/restPage/'+this.paper.id})
-                }).catch(() => {})
+                this.$alert('模块'+ (this.paper.currentSection) + '结束!', '提示', {
+                    confirmButtonText: '确定',
+                    callback: () => {
+                        this.paper.currentSection++;
+                        this.leftTimeSec = 60 * parseInt(this.paper.sectionDurations.split(',')[this.paper.currentSection - 1]);
+                        this.paper.leftTimeSec = this.leftTimeSec;
+                        this.paper.currentQuestion = this.paper.indexRange[this.paper.currentSection - 1].min;
+                        localStorage.setItem('testPaper' + this.paper.id, JSON.stringify(this.paper));
+                        this.$router.push({path: '/app/restPage/'+this.paper.id})
+                    }
+                })
             }
             else {
                 localStorage.setItem('testPaper' + this.paper.id, JSON.stringify(this.paper));
@@ -180,6 +187,24 @@ export default {
                 })
             })
         },
+        judgeLagestHeight(callback){
+            let timer = setInterval(() => {
+                let stopLoop = true;
+                this.$refs.htmlContent.forEach((item) => {
+                    if(item.getElementsByTagName("img").length && item.getElementsByTagName("img")[0].clientHeight == 0){
+                        stopLoop = false;
+                    }
+                })
+                if(stopLoop){
+                    let maxHeight = Math.max(...this.$refs.htmlContent.map((item) => {
+                        return item.clientHeight;
+                    }));
+                    callback(maxHeight);
+                    clearInterval(timer);
+                    return;
+                }
+            }, 100)
+        },
         deleteContentWord(){
             delete this.paper.createtime;
             delete this.paper.updatetime;
@@ -193,9 +218,6 @@ export default {
                 delete this.paper.questions[indexs].wrongDesc;
             }
         },
-        closeCard(){
-            this.data.cardOpen = false;
-        }
     },
     watch: {
         leftTimeSec(val) {
@@ -214,6 +236,6 @@ export default {
     beforeDestroy() {
         clearInterval(this.interval);
         clearInterval(this.singleInterval);
-        document.removeEventListener('click',this.closeCard);
+        document.removeEventListener('click',() => {this.data.cardOpen = false;});
     },
   }

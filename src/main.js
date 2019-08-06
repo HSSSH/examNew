@@ -12,7 +12,7 @@ axios.defaults.withCredentials = true;
 Vue.prototype.$http = axios;
 
 router.onError((err) => {
-    console.log(err);
+    // console.log(err);
 });
 
 new Vue({
