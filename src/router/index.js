@@ -11,6 +11,8 @@ import ExamTable from '@/components/MainPage/ExamTable';
 import DoTest from '@/components/DoTest';
 import RestPage from '@/components/RestPage';
 import TestResult from '@/components/TestResult';
+import Login from '@/login/Login';
+import Index from '@/login/Index';
 Vue.use(Router);
 
 export default new Router({
@@ -65,5 +67,13 @@ export default new Router({
           name: 'TestResult',
           component: TestResult
         }]
+    },{
+        path: '/login',
+        name: 'Login',
+        component: Login
+    },{
+        path: '/index',
+        name: 'Index',
+        component: Index
     }]
 });
