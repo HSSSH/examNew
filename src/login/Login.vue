@@ -143,7 +143,7 @@ div.input-log{
     input{
       width: 130px;
     }
-    canvas{
+    .random-code{
       position: absolute;
       right: -129px;
       top: -1px;
@@ -186,65 +186,64 @@ div.login-submit{
             <img src="@/images/login/words.png">
             <div class="input-form">
                 <div>
-                    <p><span @click="state.indexType = 0;firstGetCode();" :class="{'choose':state.indexType == 0}">登录</span></p>
+                    <p><span @click="state.indexType = 0" :class="{'choose':state.indexType == 0}">登录</span></p>
                     <p><span @click="state.indexType = 1" :class="{'choose':state.indexType == 1}">注册</span></p>
                 </div>
-                <form class="login-form" th:action="@{/login}" method="post" ng-if="state.indexType == 0">
+                <form class="login-form" v-if="state.indexType == 0">
                     <div class="input-log">
                         <img src="@/images/login/iconUser.png"/>
-                        <input type="text" name="username" placeholder="请输入手机号" required/>
+                        <input type="text" name="username" @keyup.enter="submit" placeholder="请输入手机号" required/>
                     </div>
                     <div class="input-log">
                         <img src="@/images/login/iconPass.png"/>
-                        <input type="password" name="password" placeholder="请输入密码" required/>
+                        <input type="password" name="password" @keyup.enter="submit" placeholder="请输入密码" required/>
                     </div>
                     <div class="input-log check-code">
                         <img src="@/images/login/iconPass.png"/>
-                        <input type="text" name="checkCode" placeholder="请输入验证码" ng-model="check.inputCode" ng-change="checkCodeValue()" required/>
-                        <canvas width="100" height="40" id="randomCode" title="看不清，换一张" @click="getRandomCode()"></canvas>
-                        <i ng-if="check.showWrong" class="error">验证码错误</i>
+                        <input type="text" name="checkCode" placeholder="请输入验证码" v-model="check.inputCode" required/>
+                        <RandomCode :randomType="3" @getCode="getCode($event)" class="random-code"></RandomCode>
+                        <i v-if="check.showWrong" class="error">验证码错误</i>
                     </div>
                     <div class="login-submit">
-                        <input id="loginBt1" type="submit" value="登录" ng-disabled="check.inputCode.toLowerCase() !== check.generateCode" :class="{'noAllow':check.inputCode.toLowerCase() !== check.generateCode}"/>
+                        <input id="loginBt1" type="submit" value="登录" @click="submit" :disabled="check.inputCode.toLowerCase() !== check.generateCode" :class="{'noAllow':check.inputCode.toLowerCase() !== check.generateCode}"/>
                     </div>
-                    <i th:if="${param.error}" class="error">登录账号或密码错误</i>
+                    <i v-if="error" class="error">登录账号或密码错误</i>
                     <p><a>忘记密码?</a></p>
                 </form>
-                <form class="login-form register" name="registerForm" ng-if="state.indexType == 1">
+                <form class="login-form register" name="registerForm" v-if="state.indexType == 1">
                     <div class="input-log">
                         <img src="@/images/login/iconUser.png"/>
-                        <input type="text" ng-model="reg.region" name="region" placeholder="请输入校区" required/>
+                        <input type="text" v-model="reg.region" name="region" placeholder="请输入校区" required/>
                     </div>
                     <div class="input-log">
                         <img src="@/images/login/iconUser.png"/>
-                        <input type="text" ng-model="reg.name" name="name" placeholder="请输入考生姓名" required/>
+                        <input type="text" v-model="reg.name" name="name" placeholder="请输入考生姓名" required/>
                     </div>
                     <div class="input-log">
                         <img src="@/images/login/iconUser.png"/>
-                        <input type="text" ng-model="reg.username" name="regName" placeholder="请输入手机号" ng-change="checkUser()" required/>
-                        <i ng-if="check.userAlready" class="error">该号码已使用</i>
+                        <input type="text" v-model="reg.username" name="regName" placeholder="请输入手机号" required/>
+                        <i v-if="check.userAlready" class="error">该号码已使用</i>
                     </div>
                     <!--<div class="input-log">-->
                         <!--<img src="@/images/login/iconUser.png"/>-->
-                        <!--<input type="text" ng-model="reg.phone" name="regPhone" placeholder="请输入手机号" ng-change="checkPhone()" required/>-->
-                        <!--<i ng-if="check.phoneAlready" class="error">该号码已使用</i>-->
+                        <!--<input type="text" v-model="reg.phone" name="regPhone" placeholder="请输入手机号" ng-change="checkPhone()" required/>-->
+                        <!--<i v-if="check.phoneAlready" class="error">该号码已使用</i>-->
                     <!--</div>-->
                     <div class="input-log">
                         <img src="@/images/login/iconPass.png"/>
-                        <input type="password" ng-model="reg.password" name="regPass" placeholder="请设置密码(6-16位)" required/>
+                        <input type="password" v-model="reg.password" name="regPass" placeholder="请设置密码(6-16位)" required/>
                     </div>
                     <div class="input-log">
                         <img src="@/images/login/iconPass.png"/>
-                        <input type="password" ng-model="reg.passwordConfirm" name="regPassConfirm" placeholder="确认密码" required ng-change="checkConfirm()"/>
-                        <i ng-if="check.checkPassWrong" class="error">确认密码不相同</i>
+                        <input type="password" v-model="reg.passwordConfirm" name="regPassConfirm" placeholder="确认密码" required/>
+                        <i v-if="check.checkPassWrong" class="error">确认密码不相同</i>
                     </div>
                     <div class="login-submit">
-                        <button id="regButton" ng-disabled="registerForm.$invalid || reg.password != reg.passwordConfirm || check.userAlready"
-                                :class="{'noAllow':registerForm.$invalid || reg.password != reg.passwordConfirm || check.userAlready}" @click="registerNew()">
+                        <button id="regButton" @click="registerNew">
                             注册
                         </button>
                     </div>
-                    <!--<div class="agree-doc"><input type="checkbox" ng-model="reg.agreeReg"/>已阅读并同意<a>《网站注册及用户协议》</a></div>-->
+                    <!--<div class="agree-doc"><input type="checkbox" v-model="reg.agreeReg"/>已阅读并同意<a>《网站注册及用户协议》</a></div>-->
                 </form>
             </div>
             <p>Copyright ©爻象教育 版权所有2018</p>
@@ -253,11 +252,32 @@ div.login-submit{
 </template>
 
 <script>
-    import { login } from '@/api/login';
+    import RandomCode from '@/tools/RandomCode';
+    import { login , checkOnly ,register} from '@/api/login';
     export default {
         name: "Login",
+        components:{
+            RandomCode
+        },
         data: function () {
             return {
+                state: {
+                    indexType: 0
+                },
+                check: {
+                    inputCode:'',
+                    generateCode:'',
+                    showWrong:false,
+                    checkPassWrong:false,
+                    userAlready:false,
+                    phoneAlready:false
+                },
+                reg:{
+                    region:'',
+                    name:'',
+                    username:'',
+                    password:'',
+                },
                 error: false,
                 loading: false,
                 single:false,
@@ -265,12 +285,41 @@ div.login-submit{
                 pwd:""
             }
         },
+        created() {
+            this.state.indexType = this.$route.path.indexOf("register") !== -1 ? 1:0;
+        },
         watch: {
         },
         mounted () {
             // this.getlocalStorage()          
         },
-        methods: {            
+        methods: {
+            checkCodeValue() {
+                if (this.check.inputCode && this.check.inputCode.length >= this.check.generateCode.length) {
+                    this.check.showWrong = (this.check.inputCode.toLowerCase() !== this.check.generateCode);
+                    return;
+                }
+                this.check.showWrong = false;
+            },            
+            getCode(code){
+                if (code) {
+                    this.check.generateCode = code;
+                }
+            },
+            checkConfirm() {
+                if(this.reg.password && this.reg.passwordConfirm && this.reg.passwordConfirm.length >= this.reg.password.length){
+                    this.check.checkPassWrong = (this.reg.passwordConfirm !== this.reg.password);
+                    return;
+                }
+                this.check.checkPassWrong = false;
+            },
+            checkUser () {
+                checkOnly(this.reg.username).then(
+                    result => {
+                        this.check.userAlready = result?false:true;
+                    }
+                )
+            },
             submit () {
                 if (!this.$refs.loginUsername.value || !this.$refs.loginPassword.value) {
                     this.error = true;
@@ -293,30 +342,16 @@ div.login-submit{
                     this.error = true;
                     this.loading = false;
                 });
-                if(this.single == true){
-                    this.setlocalStorage(this.$refs.loginUsername.value,this.$refs.loginPassword.value,this.single);
-                }else{
-                    this.clearlocalStorage()
-                }
             },
-            /*goRegister(){
-                this.$router.push({name:'Register'})
-            },*/
-            setlocalStorage(name,pwd,status){
-                localStorage.setItem("name",name);
-                localStorage.setItem("pwd",pwd);
-                localStorage.setItem("status",status);
-            },
-            getlocalStorage(){
-              this.username =  localStorage.getItem("name");
-              this.pwd =  localStorage.getItem("pwd");
-              if(localStorage.getItem("status")){this.single = true }
-               
-            },
-           clearlocalStorage(){
-               this.single = false;
-               localStorage.clear() ;
-           }
+            registerNew() {
+                register(this.reg).then(result => {
+                    console.log(result);
+                    if(result){
+                        alert('注册成功');
+                        this.state.indexType = 0;
+                    }
+                })
+            }
         }
     };
 </script>

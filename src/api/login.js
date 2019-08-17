@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-//获取测试卷列表
-export function getPaperList(status) {
+//登录
+export function login(status) {
     return axios.get('/paper/listPapers',{
         params: {
             status: status
@@ -10,18 +10,16 @@ export function getPaperList(status) {
     .then(res => res.data);
 }
 
-//获取单张试卷
-export function getPaperById(id) {
-    return axios.get('/paper/getOnePaper/'+id)
-    .then(res => res.data);
+//验证身份唯一
+export function checkOnly(name){
+    return axios.get('/user/checkUsername?username=' + name).then(result => result.data)
 }
 
-//提交答题试卷
-export function commitPaper(paper) {
+//注册
+export function register(reg) {
     return axios({
         method: 'post',
-        url: '/commit/paper',
-        params: paper
-    })
-        .then(res => res.data)
+        url: '/user/add',
+        data: reg
+    }).then(res => res.data)
 }
