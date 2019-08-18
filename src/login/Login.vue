@@ -174,6 +174,13 @@ div.login-submit{
     }
   }
 }
+input:-webkit-autofill , textarea:-webkit-autofill, select:-webkit-autofill {
+  -webkit-text-fill-color: #736A6B !important;
+  transition: background-color 5000s ease-in-out 5000s;
+}
+.error{
+  color: red;
+}
 </style>
 <template>
     <div class="login-body">
