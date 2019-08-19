@@ -1,13 +1,25 @@
 import axios from 'axios';
 
 //登录
-export function login(status) {
-    return axios.get('/paper/listPapers',{
-        params: {
-            status: status
+export function login({username, password}) {
+    return axios({
+        method: 'post',
+        url: '/login',
+        data: {
+            username,
+            password
+        },
+        transformRequest: [function(data) {
+            let ret = ''
+            for (let it in data) {
+                ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+            }
+            return ret;
+        }],
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
         }
-    })
-    .then(res => res.data);
+    }).then(res => res.data)
 }
 
 //验证身份唯一
