@@ -24,6 +24,17 @@ export default new Router({
         name: 'App',
         component: App,
         redirect: { name: 'MainPage' },
+        beforeEnter: (to, from, next) => {
+            getLoginUser().then(data => {
+                store.dispatch('getLoginUser', data);
+                return getDepartments(data.companyId);
+            }).then(data => {
+                store.dispatch('getDepartments', data);
+                next();
+            }).catch(() => {
+                next({name: 'Login'});
+            })
+        },
         children: [{
             path: 'mainPage',
             name: 'MainPage',
@@ -70,7 +81,8 @@ export default new Router({
     },{
         path: '/login',
         name: 'Login',
-        component: Login
+        component: Login,
+        props: (route) => { query: route.query.reg }
     },{
         path: '/index',
         name: 'Index',
