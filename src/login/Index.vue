@@ -37,6 +37,20 @@
     overflow: hidden;
     .el-carousel--horizontal{
       height: 100%;
+      .el-carousel__item{
+        &:nth-child(3){
+          background: url("../images/index/BANNER.jpg") no-repeat center #66B0D5;
+          background-size:auto 100%;
+        }
+        &:nth-child(4){
+          background: url("../images/index/BANNER.jpg") no-repeat center #66B0D5;
+          background-size:auto 100%;
+        }
+        &:nth-child(5){
+          background: url("../images/index/BANNER.jpg") no-repeat center #66B0D5;
+          background-size:auto 100%;
+        }
+      }
     }
   }
   .bottom-part{
@@ -76,14 +90,13 @@
         <li>最新动态</li>
         <li>关于我们</li>
         <li>联系我们</li>
-        <li><a href="/login">登录</a></li>
-        <li><a href="/login#register">注册</a></li>
+        <li><a @click="goLogin">登录</a></li>
+        <li><a @click="goLogin('reg')">注册</a></li>
     </ul>
 </div>
 <div class="middle-part">
   <el-carousel height="100%">
-      <el-carousel-item v-for="item in 5" :key="item">
-        <h3 class="small">{{ item }}</h3>
+      <el-carousel-item v-for="item in 1" :key=item>
       </el-carousel-item>
     </el-carousel>
 </div>
@@ -106,6 +119,9 @@ export default {
   created() {
   },
   methods: {
+    goLogin(type){
+
+    }
   },
   beforeDestroy() {
   },
