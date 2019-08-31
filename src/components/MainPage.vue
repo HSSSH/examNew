@@ -1,4 +1,4 @@
-<style lang="scss">
+<style lang="scss" scoped>
 .main-page{
   .top-part{
     width: 70%;
@@ -88,11 +88,10 @@
             </li>
         </ul>
         <div>
-            <!-- {{currentUser.name}},欢迎你 -->
-            xxx,欢迎你
+            {{currentUser.name}},欢迎你
             <ul>
                 <li>个人主页</li>
-                <li><a href="logout">退出</a></li>
+                <li><a @click="logout">退出</a></li>
             </ul>
         </div>
     </div>
@@ -101,12 +100,14 @@
 </template>
 
 <script>
+import { logout } from '@/api/login';
 export default {
   name: 'MainPage',
   components: {
   },
   data () {
       return {
+        currentUser: this.$store.state.loginUser,
         menuList:[
           {
               name: '首页',
@@ -123,17 +124,32 @@ export default {
           }, {
               name: '联系我们',
               link: '/app/mainPage/contactUs',
-          }, {
-              name: '新页面测试',
-              link: '/app/mainPage/examTable',
           }
         ]
 	    }
   },
   created() {
-    
   },
   methods: {
+    logout(){
+      logout().then((res) => {
+          if (res && res.ok == '1') {
+              this.$router.replace({name: 'Login'});
+          } else {
+            this.$alert((res&&res.msg) || '登出失败！', '提示', {
+                confirmButtonText: '确定',
+                callback: () => {
+                }
+            })
+          }
+      }).catch(() => {
+          this.$alert((res&&res.msg) || '登出失败！', '提示', {
+              confirmButtonText: '确定',
+              callback: () => {
+              }
+          })
+      })
+    }
   }
 }
 </script>

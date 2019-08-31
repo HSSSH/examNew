@@ -1,4 +1,4 @@
-<style lang="scss">
+<style lang="scss" scoped>
 .rest{
   width: 100%;
   height: 100%;
@@ -36,6 +36,13 @@
       }
     }
   }
+}
+.bt-type3{
+  border: solid 1px #27A4D4;
+  background: none;
+  padding: 10px;
+  color: #27A4D4;
+  border-radius: 8px;
 }
 </style>
 <template>

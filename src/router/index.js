@@ -13,28 +13,34 @@ import RestPage from '@/components/RestPage';
 import TestResult from '@/components/TestResult';
 import Login from '@/login/Login';
 import Index from '@/login/Index';
+import NotFound from '@/NotFound';
+
+import ControlApp from '@/ControlApp';
+import ControlMainPage from '@/components/ControlMainPage';
+import PaperList from '@/components/controlMainPage/PaperList';
+import ControlLogin from '@/login/ControlLogin';
+
+import store from '@/store/index';
+import { getLoginUser } from '@/api/login'
 Vue.use(Router);
 
 export default new Router({
     routes: [{
-        path: '*',
+        path: '/',
         redirect: { name: 'App' },
     },{
         path: '/app',
         name: 'App',
         component: App,
-        redirect: { name: 'MainPage' },
         beforeEnter: (to, from, next) => {
             getLoginUser().then(data => {
-                store.dispatch('getLoginUser', data);
-                return getDepartments(data.companyId);
-            }).then(data => {
-                store.dispatch('getDepartments', data);
+                store.dispatch('setLoginUser', data);
                 next();
             }).catch(() => {
                 next({name: 'Login'});
             })
         },
+        redirect: { name: 'MainPage' },
         children: [{
             path: 'mainPage',
             name: 'MainPage',
@@ -87,5 +93,37 @@ export default new Router({
         path: '/index',
         name: 'Index',
         component: Index
+    },{
+		path: '*',
+        name: 'NotFound',
+        component: NotFound
+    },{
+        path: '/ctrlApp',
+        name: 'ControlApp',
+        component: ControlApp,
+        beforeEnter: (to, from, next) => {
+            getLoginUser().then(data => {
+                store.dispatch('setLoginUser', data);
+                next();
+            }).catch(() => {
+                next({name: 'ControlLogin'});
+            })
+        },
+        redirect: { name: 'ControlMainPage' },
+        children: [{
+            path: 'ctrlMainPage',
+            name: 'ControlMainPage',
+            component: ControlMainPage,
+            redirect: { name: 'PaperList' },
+            children: [{
+                path: 'paperList',
+                name: 'PaperList',
+                component: PaperList,
+            }],
+        }]
+    },{
+        path: '/ctrlLogin',
+        name: 'ControlLogin',
+        component: ControlLogin,
     }]
 });

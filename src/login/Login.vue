@@ -153,18 +153,16 @@ div.input-log{
 }
 div.login-submit{
   height: 64px;
-  border: solid 2px #898989;
   text-align: center;
   input,button{
     width: 100%;
     height: 100%;
     background: #0C78C3;
-    opacity: 0.9;
     font-size: 35px;
     color: white;
     border: none;
     &:hover{
-      opacity: 1;
+      opacity: 0.8;
     }
     &.noAllow{
       cursor: not-allowed;
@@ -185,7 +183,7 @@ input:-webkit-autofill , textarea:-webkit-autofill, select:-webkit-autofill {
 <template>
     <div class="login-body">
         <div class="top-part">
-            <a href="/"><img src="@/images/index/LOGO.png"></a>
+            <a @click="goIndex"><img src="@/images/index/LOGO.png"></a>
             <label>登录 | 开启发现之旅</label>
         </div>
         <div class="middle-part">
@@ -196,49 +194,48 @@ input:-webkit-autofill , textarea:-webkit-autofill, select:-webkit-autofill {
                     <p><span @click="state.indexType = 0" :class="{'choose':state.indexType == 0}">登录</span></p>
                     <p><span @click="state.indexType = 1" :class="{'choose':state.indexType == 1}">注册</span></p>
                 </div>
-                <form class="login-form" v-if="state.indexType == 0">
+                <div class="login-form" v-if="state.indexType == 0">
                     <div class="input-log">
                         <img src="@/images/login/iconUser.png"/>
-                        <input type="text" name="username" @keyup.enter="submit" placeholder="请输入手机号" required/>
+                        <input type="text" name="username" ref="loginUsername" placeholder="请输入手机号" required/>
                     </div>
                     <div class="input-log">
                         <img src="@/images/login/iconPass.png"/>
-                        <input type="password" name="password" @keyup.enter="submit" placeholder="请输入密码" required/>
+                        <input type="password" name="password" ref="loginPassword" placeholder="请输入密码" required/>
                     </div>
                     <div class="input-log check-code">
                         <img src="@/images/login/iconPass.png"/>
                         <input type="text" name="checkCode" placeholder="请输入验证码" v-model="check.inputCode" required/>
                         <RandomCode :randomType="3" @getCode="getCode($event)" class="random-code"></RandomCode>
-                        <i v-if="check.showWrong" class="error">验证码错误</i>
+                        <i v-if="check.codeError" class="error">验证码错误</i>
                     </div>
                     <div class="login-submit">
-                        <input id="loginBt1" type="submit" value="登录" @click="submit" :disabled="check.inputCode.toLowerCase() !== check.generateCode" :class="{'noAllow':check.inputCode.toLowerCase() !== check.generateCode}"/>
+                        <el-button type="primary" :loading="loading" id="loginBt1" @click.prevent="submit" :disabled="check.inputCode.toLowerCase() !== check.generateCode" :class="{'noAllow':check.inputCode.toLowerCase() !== check.generateCode}">{{loading?'请稍等':'登录'}}</el-button>
                     </div>
                     <i v-if="error" class="error">登录账号或密码错误</i>
                     <p><a>忘记密码?</a></p>
-                </form>
-                <form class="login-form register" name="registerForm" v-if="state.indexType == 1">
+                </div>
+                <div class="login-form register" name="registerForm" v-if="state.indexType == 1">
                     <div class="input-log">
                         <img src="@/images/login/iconUser.png"/>
                         <input type="text" v-model="reg.region" name="region" placeholder="请输入校区" required/>
+                        <i v-if="check.schoolError && reg.region==''" class="error">校区不能为空</i>
                     </div>
                     <div class="input-log">
                         <img src="@/images/login/iconUser.png"/>
                         <input type="text" v-model="reg.name" name="name" placeholder="请输入考生姓名" required/>
+                        <i v-if="check.nameError && reg.name==''" class="error">考生姓名不能为空</i>
                     </div>
                     <div class="input-log">
                         <img src="@/images/login/iconUser.png"/>
                         <input type="text" v-model="reg.username" name="regName" placeholder="请输入手机号" required/>
                         <i v-if="check.userAlready" class="error">该号码已使用</i>
+                        <i v-if="check.phoneError && reg.username==''" class="error">手机号不能为空</i>
                     </div>
-                    <!--<div class="input-log">-->
-                        <!--<img src="@/images/login/iconUser.png"/>-->
-                        <!--<input type="text" v-model="reg.phone" name="regPhone" placeholder="请输入手机号" ng-change="checkPhone()" required/>-->
-                        <!--<i v-if="check.phoneAlready" class="error">该号码已使用</i>-->
-                    <!--</div>-->
                     <div class="input-log">
                         <img src="@/images/login/iconPass.png"/>
                         <input type="password" v-model="reg.password" name="regPass" placeholder="请设置密码(6-16位)" required/>
+                        <i v-if="check.passwordError && reg.password==''" class="error">密码不能为空</i>
                     </div>
                     <div class="input-log">
                         <img src="@/images/login/iconPass.png"/>
@@ -246,12 +243,12 @@ input:-webkit-autofill , textarea:-webkit-autofill, select:-webkit-autofill {
                         <i v-if="check.checkPassWrong" class="error">确认密码不相同</i>
                     </div>
                     <div class="login-submit">
-                        <button id="regButton" @click="registerNew">
-                            注册
-                        </button>
+                       <el-button type="primary" :loading="loading" id="regButton" :disabled="(reg.password !== reg.passwordConfirm) || check.userAlready" @click.prevent="registerNew">
+                         {{loading?'请稍等':'注册'}}
+                      </el-button>
                     </div>
                     <!--<div class="agree-doc"><input type="checkbox" v-model="reg.agreeReg"/>已阅读并同意<a>《网站注册及用户协议》</a></div>-->
-                </form>
+                </div>
             </div>
             <p>Copyright ©爻象教育 版权所有2018</p>
         </div>
@@ -274,10 +271,13 @@ input:-webkit-autofill , textarea:-webkit-autofill, select:-webkit-autofill {
                 check: {
                     inputCode:'',
                     generateCode:'',
-                    showWrong:false,
+                    codeError:false,
+                    schoolError:false,
+                    nameError:false,
+                    phoneError:false,
+                    passwordError:false,
                     checkPassWrong:false,
                     userAlready:false,
-                    phoneAlready:false
                 },
                 reg:{
                     region:'',
@@ -287,26 +287,52 @@ input:-webkit-autofill , textarea:-webkit-autofill, select:-webkit-autofill {
                 },
                 error: false,
                 loading: false,
-                single:false,
-                username:"",
-                pwd:""
             }
         },
         created() {
-            this.state.indexType = this.$route.path.indexOf("register") !== -1 ? 1:0;
+            this.state.indexType = this.$route.query.reg == 'register' ? 1:0;
+            let vm = this;
+            document.onkeypress = function(e) {
+                let code;
+                if (!e) {
+                    let e = window.event;
+                }
+                if (e.keyCode) {
+                    code = e.keyCode;
+                } else if (e.which) {
+                    code = e.which;
+                }
+                if (code == 13) {
+                    if(vm.state.indexType == 1 && vm.reg.password == vm.reg.passwordConfirm && !vm.check.userAlready){
+                      vm.registerNew();
+                    }
+                    else if(vm.check.inputCode.toLowerCase() == vm.check.generateCode){
+                      vm.submit();
+                    }
+                }
+            }
         },
         watch: {
+          'check.inputCode'(val){
+            this.checkCodeValue();
+          },
+          'reg.username'(){
+            this.checkUser();
+          },
+          'reg.passwordConfirm'(){
+            this.checkConfirm()
+          }
         },
         mounted () {
-            // this.getlocalStorage()          
+            
         },
         methods: {
             checkCodeValue() {
                 if (this.check.inputCode && this.check.inputCode.length >= this.check.generateCode.length) {
-                    this.check.showWrong = (this.check.inputCode.toLowerCase() !== this.check.generateCode);
+                    this.check.codeError = (this.check.inputCode.toLowerCase() !== this.check.generateCode);
                     return;
                 }
-                this.check.showWrong = false;
+                this.check.codeError = false;
             },            
             getCode(code){
                 if (code) {
@@ -333,31 +359,55 @@ input:-webkit-autofill , textarea:-webkit-autofill, select:-webkit-autofill {
                     return;
                 }
                 this.loading = true;
-                 
                 login({
-                    username:this.$refs.loginUsername.value,
-                    password:this.$refs.loginPassword.value
+                    username:this.$refs.loginUsername.value.trim(),
+                    password:this.$refs.loginPassword.value,
+                    loginFrom: 'student'
                 })
                 .then(res => {
                     if (res && res.ok == '1')  {
-                        this.$router.replace({name: 'SiteManage'});
+                        this.$router.replace({name: 'App'});
                     } else {
                         this.error = true;
-                        this.loading = false;
                     }
+                    this.loading = false;
                 }, () => {
                     this.error = true;
                     this.loading = false;
                 });
             },
             registerNew() {
+                if (!this.reg.region) {
+                    this.check.schoolError = true;
+                    return;
+                }
+                if (!this.reg.name) {
+                    this.check.nameError = true;
+                    return;
+                }
+                if (!this.reg.username) {
+                    this.check.phoneError = true;
+                    return;
+                }
+                if (!this.reg.password) {
+                    this.check.passwordError = true;
+                    return;
+                }
+                this.loading = true;
                 register(this.reg).then(result => {
                     console.log(result);
                     if(result){
-                        alert('注册成功');
-                        this.state.indexType = 0;
+                      this.$alert('注册成功', '提示', {confirmButtonText: '确定'})
+                      this.state.indexType = 0;
+                      this.loading = false;
                     }
-                })
+                }, () => {
+                    this.$alert('注册失败', '提示', {confirmButtonText: '确定'})
+                    this.loading = false;
+                });
+            },
+            goIndex(type){
+              this.$router.push({path: '/index'})
             }
         }
     };

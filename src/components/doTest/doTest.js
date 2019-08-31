@@ -35,6 +35,12 @@ export default {
     computed: {
         completePercent(){
             return Math.floor(100*(this.paper.currentQuestion - this.paper.indexRange[this.paper.currentSection - 1].min + 1)/(this.paper.indexRange[this.paper.currentSection - 1].max - this.paper.indexRange[this.paper.currentSection - 1].min + 1));
+        },
+        leftTimeShow(){
+            let hour = Math.floor(this.leftTimeSec / 3600);
+            let minute = Math.floor((this.leftTimeSec - hour * 3600) / 60);
+            let sec = this.leftTimeSec - hour * 3600 - minute * 60;
+            return (hour < 10?('0'+hour):hour) + ':' + (minute < 10?('0'+minute):minute) + ':' + (sec < 10?('0'+sec):sec);
         }
     },
     methods: {
@@ -178,12 +184,12 @@ export default {
         },
         setIndexRange() {
             this.paper.indexRange = []; 
-            let list = this.paper.sectionNums.split(',');
+            let list = this.paper.sectionNums.split(',').map(Number);
             list.forEach((item,index) => {
-                item = index == 0?parseInt(item):parseInt(item) + list[index - 1];
+                if(index != 0) {list[index] = item + list[index - 1];}
                 this.paper.indexRange.push({
                     min: index == 0?0:list[index - 1],
-                    max: item - 1
+                    max: list[index] - 1
                 })
             })
         },

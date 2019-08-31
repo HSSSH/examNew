@@ -90,8 +90,8 @@
         <li>最新动态</li>
         <li>关于我们</li>
         <li>联系我们</li>
-        <li><a @click="goLogin">登录</a></li>
-        <li><a @click="goLogin('reg')">注册</a></li>
+        <li><a @click="goLogin('')">登录</a></li>
+        <li><a @click="goLogin('register')">注册</a></li>
     </ul>
 </div>
 <div class="middle-part">
@@ -102,7 +102,7 @@
 </div>
 <div class="bottom-part">
     <img src="@/images/index/arrowRight.png">
-    <button><a href="/login">马上登录体验</a></button>
+    <button><a @click="goLogin('')">马上登录体验</a></button>
     <img src="@/images/index/arrowLeft.png">
 </div>
 </div>
@@ -121,7 +121,7 @@ export default {
   },
   methods: {
     goLogin(type){
-
+      this.$router.push({path: '/login', query: { reg: type!=''?type:'' }})
     }
   },
   beforeDestroy() {

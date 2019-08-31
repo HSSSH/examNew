@@ -1,13 +1,14 @@
 import axios from 'axios';
 
 //登录
-export function login({username, password}) {
+export function login({username, password,loginFrom}) {
     return axios({
         method: 'post',
         url: '/login',
         data: {
             username,
-            password
+            password,
+            loginFrom
         },
         transformRequest: [function(data) {
             let ret = ''
@@ -17,21 +18,31 @@ export function login({username, password}) {
             return ret;
         }],
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
+            // 'Content-Type': 'application/x-www-form-urlencoded'
         }
     }).then(res => res.data)
 }
 
 //验证身份唯一
 export function checkOnly(name){
-    return axios.get('/user/checkUsername?username=' + name).then(result => result.data)
+    return axios.get('/open/user/checkUsername?username=' + name).then(result => result.data)
 }
 
 //注册
 export function register(reg) {
     return axios({
         method: 'post',
-        url: '/user/add',
+        url: '/open/user/register',
         data: reg
     }).then(res => res.data)
+}
+
+//获取当前身份
+export function getLoginUser(){
+    return axios.get('/self/info').then(result => result.data)
+}
+
+//登出
+export function logout() {
+    return axios.get('/logout').then(res => res.data);
 }

@@ -165,11 +165,13 @@
         p{
           font-size: 34px;
           letter-spacing: 2px;
+          margin-bottom: 15px;
         }
         button{
           font-size: 15px;
           padding: 5px 25px;
           border: solid 2px white;
+          color: white;
           background: -webkit-linear-gradient(#45B5CB, #5AC9DD,#45B5CB); /* Safari 5.1 - 6.0 */
           background: -o-linear-gradient(#45B5CB, #5AC9DD,#45B5CB); /* Opera 11.1 - 12.0 */
           background: -moz-linear-gradient(#45B5CB, #5AC9DD,#45B5CB); /* Firefox 3.6 - 15 */
@@ -215,10 +217,10 @@
         <div v-if="testState.type == 3" class="project-ability">
             <div class="title"><label>学科能力</label></div>
             <div>
-                <!-- <div class="paper-card" v-for="item in paperList" :key="item.id">
+                <div class="paper-card" v-for="item in paperList" :key="item.id">
                     <p>{{item.name}}<br/>能力测试</p>
                     <button @click="startTest(item)">马上进入</button>
-                </div> -->
+                </div>
             </div>
         </div>
     </div>
@@ -245,6 +247,9 @@ export default {
     });
   },
   methods: {
+    startTest(item){
+      this.$router.push({path: '/app/doTest/'+item.id})
+    }
   }
 }
 </script>

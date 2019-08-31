@@ -10,25 +10,27 @@
             </div>
             <div class="time-count">
                 <span>考试时间:</span><br/>
-                <span v-show="data.noBlink">{{leftTimeSec}}</span>
+                <span v-show="data.noBlink">{{leftTimeShow}}</span>
             </div>
             <div class="mark-flag">
-                <div v-if="paper.currentSection == 3">
+                <div v-if="paper.currentSection == 2">
                     <img src="@/images/doTest/calculate.png" @click="data.showCalculator = !data.showCalculator"><br/>
                     <span>计算器</span>
                 </div>
-                <div v-if="paper.currentSection == 3">
+                <div v-if="paper.currentSection == 2">
                     <img src="@/images/doTest/mark-pen.png"><br/>
                     <span>记号笔</span>
                 </div>
-                <div>
-                    <img :src="'../../images/doTest/'+(paper.questions[paper.currentQuestion].flag?'flag2-choose.png':'flag2.png')" @click="paper.questions[paper.currentQuestion].flag = !paper.questions[paper.currentQuestion].flag"><br/>
-                    <span :style="{'color':paper.questions[paper.currentQuestion].flag?'#f39f00':'#ffffff'}">标记&nbsp;&nbsp;</span>
+                <div @click="paper.questions[paper.currentQuestion].flag = !paper.questions[paper.currentQuestion].flag">
+                    <!-- <img :src="'../../images/doTest/'+(paper.questions[paper.currentQuestion].flag?'flag2-choose.png':'flag2.png')" @click="paper.questions[paper.currentQuestion].flag = !paper.questions[paper.currentQuestion].flag"><br/> -->
+                    <img v-if="paper.questions[paper.currentQuestion].flag" src="@/images/doTest/flag2-choose.png">
+                    <img v-if="!paper.questions[paper.currentQuestion].flag" src="@/images/doTest/flag2.png">
+                    <br/><span :style="{'color':paper.questions[paper.currentQuestion].flag?'#f39f00':'#ffffff'}">标记&nbsp;&nbsp;</span>
                 </div>
             </div>
             <div class="answer-list" :class="{'openCard':data.cardOpen}">
                 <div>
-                    答题卡<br/>
+                    <p>答题卡</p>
                     <span></span>
                 </div>
                 <div>
@@ -48,14 +50,16 @@
                 </div>
             </div>
         </div>
-        <div class="material-part" v-if="paper.currentSection == 3">
-            <div class="triangle-top"><span>材</span><span>料</span></div>
-            <div style="overflow: auto">
-                <div v-html="paper.sections[paper.currentSection - 1].material" class="material-html"></div>
+        <div class="material-part" v-if="paper.currentSection == 2" v-better-scroll>
+            <div>
+                <div class="triangle-top"><span>材</span><span>料</span></div>
+                <div>
+                    <div v-html="paper.sections[paper.currentSection - 1].material" class="material-html"></div>
+                </div>
             </div>
         </div>
-        <div class="scroll-part" :class="{'halfScreen':paper.currentSection == 3}">
-            <div style="overflow: auto">
+        <div class="scroll-part" :class="{'halfScreen':paper.currentSection == 2}" v-better-scroll>
+            <div>
                 <div class="progress-part">
                     <span>答题进度</span>
                     <div>
@@ -79,16 +83,15 @@
                             <div v-html="paper.questions[paper.currentQuestion].content" class="content-html"></div>
                         </div>
                     </div>
-                    <!-- <div largest-container signal="paper.currentQuestion"> -->
                     <div>
-                        <div class="answer-area" :style="{'height':largestHeight + 'px'}" v-for="answer in paper.questions[paper.currentQuestion].options" @click="chooseCorrect(answer,paper.questions[paper.currentQuestion].options)">
+                        <div class="answer-area" :style="{'height':largestHeight + 'px'}" v-for="answer in paper.questions[paper.currentQuestion].options" 
+                        @click="chooseCorrect(answer,paper.questions[paper.currentQuestion].options)" :class="{'backChoose':answer.choose}">
                             <div :class="{'correct':answer.choose}">
                                 <i :class="{'multiChooseType':paper.questions[paper.currentQuestion].correctNum > 1}">
                                     <img src="@/images/doTest/tick-up.png" v-if="answer.choose">
                                 </i>
                                 <label>{{allOptionList[answer.oindex]}}</label>
                             </div>
-                            <!-- <div v-html="answer.content" class="answer-html transparent"> -->
                             <div v-html="answer.content" class="answer-html" ref="htmlContent">
                             </div>
                         </div>
