@@ -248,7 +248,7 @@ export default {
   },
   methods: {
     startTest(item){
-      this.$router.push({path: '/app/doTest/'+item.id})
+      this.$router.push({path: '/app/guidePage/'+item.id})
     }
   }
 }

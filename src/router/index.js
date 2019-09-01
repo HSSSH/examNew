@@ -11,6 +11,7 @@ import ExamTable from '@/components/MainPage/ExamTable';
 import DoTest from '@/components/DoTest';
 import RestPage from '@/components/RestPage';
 import TestResult from '@/components/TestResult';
+import GuidePage from '@/components/GuidePage';
 import Login from '@/login/Login';
 import Index from '@/login/Index';
 import NotFound from '@/NotFound';
@@ -71,6 +72,10 @@ export default new Router({
                 name: 'ExamTable',
                 component: ExamTable,
             }],
+        },{
+            path: 'guidePage/:examId',
+            name: 'GuidePage',
+            component: GuidePage
         },{
           path: 'doTest/:examId',
           name: 'DoTest',
