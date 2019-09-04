@@ -1,5 +1,38 @@
 import Vue from 'vue';
 import BScroll from 'better-scroll';
+import echarts from 'echarts';
+/*
+* echarts 配置指令
+* echarts-render="{options: options}"
+*/
+Vue.directive('echartsRender', {
+    inserted (el, binding) {
+        const chart = echarts.init(el);
+        el.chartoption = JSON.stringify(binding.value.options);
+        chart.setOption(binding.value.options);
+        window.addEventListener('resize', chart.resize);
+    },
+    update (el, binding) {
+        if (JSON.stringify(binding.value.options) == el.chartoption) return;
+        const oldChart = echarts.getInstanceByDom(el);
+        if (oldChart) {
+            window.removeEventListener('resize', oldChart.resize);
+            oldChart.dispose();
+        }
+        const chart = echarts.init(el);
+        chart.setOption(binding.value.options);
+        el.chartoption = JSON.stringify(binding.value.options);
+        window.addEventListener('resize', chart.resize);
+    },
+    unbind (el) {
+        const oldChart = echarts.getInstanceByDom(el);
+        if (oldChart) {
+            window.removeEventListener('resize', oldChart.resize);
+            oldChart.dispose();
+        }
+    }
+});
+
 /*
 * better-scroll 配置指令
 */

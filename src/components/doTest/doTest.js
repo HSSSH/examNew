@@ -31,6 +31,10 @@ export default {
     },
     mounted() {
         document.addEventListener("click",() => {this.data.cardOpen = false;});
+        const oScript = document.createElement('script');
+        oScript.type = 'text/javascript';
+        oScript.src = 'mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+        document.body.appendChild(oScript);
     },
     computed: {
         completePercent(){
@@ -118,18 +122,16 @@ export default {
                 $event.stopPropagation();
             }
             if(page >= this.paper.indexRange[this.paper.currentSection - 1].min && page <= this.paper.indexRange[this.paper.currentSection - 1].max){
-                if(this.paper.currentQuestion != page){
-                    if(flag != 'first') {
-                        clearInterval(this.singleInterval);
-                    }
-                    this.singleInterval = setInterval(() => {
-                        if(!this.paper.questions[this.paper.currentQuestion].usetime){
-                            this.paper.questions[this.paper.currentQuestion].usetime = 1;
-                        }
-                        else this.paper.questions[this.paper.currentQuestion].usetime++;
-                    }, 1000);
+                if(flag != 'first') {
+                    clearInterval(this.singleInterval);
                 }
                 this.paper.currentQuestion = page;
+                this.singleInterval = setInterval(() => {
+                    if(!this.paper.questions[this.paper.currentQuestion].usetime){
+                        this.paper.questions[this.paper.currentQuestion].usetime = 1;
+                    }
+                    else this.paper.questions[this.paper.currentQuestion].usetime++;
+                }, 1000);
                 setTimeout(() => {
                     MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
                     this.judgeLagestHeight((height) => {
@@ -168,11 +170,32 @@ export default {
                 this.$alert('您已完成此次测试，请耐心等待我们的专业老师与您沟通测试结果，助您进步！', '提示', {
                     confirmButtonText: '确定',
                     callback: () => {
-                        this.deleteContentWord();
-                        // console.log(this.paper);
-                        commitPaper(this.paper).then((result) => {
-                            if(result.code == 200){
-                                this.$router.push({path: '/app/testResult/'+result.message+'/'+this.paper.totalScore})
+                        let commitData = {
+                            "name": this.paper.name,
+                            "pid": this.paper.id,
+                            "uid": this.$store.state.loginUser.id,
+                            "answers": []
+                        }
+                        for (let indexs = 0;indexs < this.paper.questions.length; indexs++){
+                            let obj = {
+                                "number": this.paper.questions[indexs].number,
+                                "options": '',
+                                "qid": this.paper.questions[indexs].id,
+                                "useTime": this.paper.questions[indexs].usetime
+                            }
+                            if(!this.paper.questions[indexs].ans){this.paper.questions[indexs].ans = '';}
+                            let ansList = this.paper.questions[indexs].ans.split(',').map(Number);
+                            this.paper.questions[indexs].options.forEach(item => {
+                                if(ansList.indexOf(item.id) != -1){
+                                    obj.options += this.allOptionList[item.oindex];
+                                }
+                            })
+                            commitData.answers.push(obj)
+                        }
+                        console.log(commitData);
+                        commitPaper(commitData).then((res) => {
+                            if(res.result == true){
+                                this.$router.push({path: '/app/testResult/' + res.t.score + '/' + 100})
                             }
                             else {
                                 // console.log("error");
@@ -210,19 +233,6 @@ export default {
                     return;
                 }
             }, 100)
-        },
-        deleteContentWord(){
-            delete this.paper.createtime;
-            delete this.paper.updatetime;
-            delete this.paper.remark;
-            delete this.paper.sections;
-            for (var indexs = 0;indexs < this.paper.questions.length; indexs++){
-                delete this.paper.questions[indexs].options;
-                delete this.paper.questions[indexs].content;
-                delete this.paper.questions[indexs].updatetime;
-                delete this.paper.questions[indexs].createtime;
-                delete this.paper.questions[indexs].wrongDesc;
-            }
         },
     },
     watch: {

@@ -19,6 +19,8 @@ import NotFound from '@/NotFound';
 import ControlApp from '@/ControlApp';
 import ControlMainPage from '@/components/ControlMainPage';
 import PaperList from '@/components/controlMainPage/PaperList';
+import UserList from '@/components/controlMainPage/UserList';
+import Report from '@/components/controlOther/Report';
 import ControlLogin from '@/login/ControlLogin';
 
 import store from '@/store/index';
@@ -124,7 +126,15 @@ export default new Router({
                 path: 'paperList',
                 name: 'PaperList',
                 component: PaperList,
+            },{
+                path: 'userList',
+                name: 'UserList',
+                component: UserList,
             }],
+        },{
+            path: 'report',
+            name: 'Report',
+            component: Report,
         }]
     },{
         path: '/ctrlLogin',

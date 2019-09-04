@@ -228,7 +228,7 @@
 </template>
 
 <script>
-import { getPaperList } from '@/api/exam';
+import { getPaperList,checkFirstTest } from '@/api/exam';
 export default {
   name: 'AbilityTest',
   components: {
@@ -248,7 +248,14 @@ export default {
   },
   methods: {
     startTest(item){
-      this.$router.push({path: '/app/guidePage/'+item.id})
+      checkFirstTest(item.id,this.$store.state.loginUser.id).then(res => {
+        if(res.result){
+          this.$alert('该试题您已完成，不需要重复测试！', '提示', {confirmButtonText: '确定'});
+        }
+        else{
+          this.$router.push({path: '/app/guidePage/'+item.id})
+        }
+      })
     }
   }
 }

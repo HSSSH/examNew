@@ -10,6 +10,17 @@ export function getPaperList(status) {
     .then(res => res.data);
 }
 
+//检测是否已经测试
+export function checkFirstTest(pid,uid) {
+    return axios.get('/paper/hasCommit',{
+        params: {
+            pid: pid,
+            uid: uid,
+        }
+    })
+    .then(res => res.data);
+}
+
 //获取单张试卷
 export function getPaperById(id) {
     return axios.get('/paper/getOnePaper/'+id)
@@ -20,8 +31,8 @@ export function getPaperById(id) {
 export function commitPaper(paper) {
     return axios({
         method: 'post',
-        url: '/commit/paper',
-        params: paper
+        url: '/paper/commit',
+        data: paper
     })
         .then(res => res.data)
 }

@@ -7,6 +7,7 @@ module.exports = {
             }
         }
     },
+    productionSourceMap:false,
     runtimeCompiler: true, //开启运行时模版编译，否则不可使用动态模版
     devServer: {
         proxy: {

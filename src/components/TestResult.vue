@@ -61,11 +61,16 @@
         }
       }
     }
-    .bt-type3{
-      position: absolute;
-      top:20px;
-      left: 20px;
-    }
+  }
+  .bt-type3{
+    border: solid 1px #27A4D4;
+    background: none;
+    padding: 10px;
+    color: #27A4D4;
+    border-radius: 8px;
+    position: absolute;
+    top:20px;
+    left: 20px;
   }
 }
 </style>
