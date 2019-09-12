@@ -84,7 +84,7 @@
                     </div>
                 </div>
                 <div>
-                    <div class="answer-area" :style="{'height':largestHeight + 'px'}" v-for="answer in paper.questions[paper.currentQuestion].options" 
+                    <div class="answer-area" :style="{'height':largestHeight + 'px','opacity':ansOpacity}" v-for="answer in paper.questions[paper.currentQuestion].options" 
                     @click="chooseCorrect(answer,paper.questions[paper.currentQuestion].options)" :class="{'backChoose':answer.choose}">
                         <div :class="{'correct':answer.choose}">
                             <i :class="{'multiChooseType':paper.questions[paper.currentQuestion].correctNum > 1}">

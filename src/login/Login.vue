@@ -3,30 +3,30 @@
 .login-body{
   width: 100%;
   height: 100%;
+  background: url(../images/login/loginBack.jpg)no-repeat center;
+  background-size: cover;
   .top-part{
-    width: 80%;
-    height: 120px;
+    width: 90%;
+    height: 100px;
     margin: 0 auto;
-    img{
-      position: relative;
-      top:50%;
-      transform:translateY(-50%);
-    }
-    label{
-      font-weight: normal;
+    p{
       display: inline-block;
-      margin-left: 30px;
-      font-size: 27px;
-      color: #268AB2;
-      position: relative;
-      top: 30px;
+      text-align: center;
+      padding-top: 20px;
+      &>label{
+        font-size: 36px;
+        color: #4AA9B8;
+        letter-spacing: 1px;
+        &:nth-child(3){
+          font-size: 14px;
+          letter-spacing: -1px;
+        }
+      }
     }
   }
   .middle-part{
     width: 100%;
     height: calc(100% - 120px);
-    background: url(../images/login/loginBack.jpg)no-repeat center;
-    background-size: cover;
     position: relative;
     &>img:nth-child(1),img:nth-child(2){
       position: relative;
@@ -183,8 +183,12 @@ input:-webkit-autofill , textarea:-webkit-autofill, select:-webkit-autofill {
 <template>
     <div class="login-body">
         <div class="top-part">
-            <a @click="goIndex"><img src="@/images/index/LOGO.png"></a>
-            <label>登录 | 开启发现之旅</label>
+          <p>
+            <label>爻象诊断</label>
+            <br/>
+            <label>DETERMINE AND REVIEW</label>
+            <!-- <a @click="goIndex"><img src="@/images/index/LOGO.png"></a> -->
+          </p>
         </div>
         <div class="middle-part">
             <img src="@/images/login/elephant.png">

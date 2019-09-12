@@ -21,20 +21,21 @@ export default {
             indexRange: [{min: 0,max: 1}],
             leftTimeSec: 3600
         },          
-        largestHeight: 60
+        largestHeight: 60,
+        ansOpacity: '0'
       }
     },
     created() {
+        const oScript = document.createElement('script');
+        oScript.type = 'text/javascript';
+        oScript.src = 'mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+        document.body.appendChild(oScript);
         if (this.$route.params.examId) {
             this.loadPaper(this.$route.params.examId);
         }
     },
     mounted() {
         document.addEventListener("click",() => {this.data.cardOpen = false;});
-        const oScript = document.createElement('script');
-        oScript.type = 'text/javascript';
-        oScript.src = 'mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
-        document.body.appendChild(oScript);
     },
     computed: {
         completePercent(){
@@ -132,11 +133,13 @@ export default {
                     }
                     else this.paper.questions[this.paper.currentQuestion].usetime++;
                 }, 1000);
+                this.ansOpacity = '0';
                 setTimeout(() => {
-                    MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
                     this.judgeLagestHeight((height) => {
                         console.log(height);
                         this.largestHeight = height > 60?height:60;
+                        this.ansOpacity = '1';
+                        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
                     })
                 },0);
             }
@@ -233,7 +236,7 @@ export default {
                     return;
                 }
             }, 100)
-        },
+        }
     },
     watch: {
         leftTimeSec(val) {
@@ -242,9 +245,16 @@ export default {
             }
             else if(this.paper.id) {
                 localStorage.setItem('testPaper' + this.paper.id, JSON.stringify(this.paper));
-                //10分钟时闪烁一下计时器
-                if(val == 10*60){
-                    setInterval(() => {this.data.noBlink = !this.data.noBlink;}, 500, 10);
+                //还剩10分钟或5分钟时闪烁一下计时器
+                if(val == 10*60 || val == 5*60){
+                    let count = 0;
+                    let blinkInterval = setInterval(() => {
+                        count++;
+                        if(count === 10){    
+                            clearInterval(blinkInterval);    
+                        }
+                        this.data.noBlink = !this.data.noBlink;
+                    }, 500);
                 }
             }
         }

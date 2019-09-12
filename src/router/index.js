@@ -40,7 +40,7 @@ export default new Router({
                 store.dispatch('setLoginUser', data);
                 next();
             }).catch(() => {
-                next({name: 'Login'});
+                next({name: 'Index'});
             })
         },
         redirect: { name: 'MainPage' },
