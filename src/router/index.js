@@ -12,7 +12,6 @@ import DoTest from '@/components/DoTest';
 import RestPage from '@/components/RestPage';
 import TestResult from '@/components/TestResult';
 import GuidePage from '@/components/GuidePage';
-import Login from '@/login/Login';
 import Index from '@/login/Index';
 import NotFound from '@/NotFound';
 
@@ -91,11 +90,6 @@ export default new Router({
           name: 'TestResult',
           component: TestResult
         }]
-    },{
-        path: '/login',
-        name: 'Login',
-        component: Login,
-        props: (route) => { query: route.query.reg }
     },{
         path: '/index',
         name: 'Index',

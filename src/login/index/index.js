@@ -8,9 +8,9 @@ export default {
     data () {
         return {
             pageIndex:1,
-            loginType:1,
             state: {
-                indexType: 1
+                indexType: 1,
+                carouselIndex: 0
             },
             check: {
                 inputCode:'',
@@ -139,7 +139,6 @@ export default {
             }
             this.loading = true;
             register(this.reg).then(result => {
-                console.log(result);
                 if(result){
                     this.$alert('注册成功', '提示', {confirmButtonText: '确定'})
                     this.state.indexType = 1;
@@ -150,8 +149,8 @@ export default {
                 this.loading = false;
             });
         },
-        goIndex(type){
-            this.$router.push({path: '/index'})
+        changeCarousel(val){
+            this.state.carouselIndex = val;
         }
     }
 }
