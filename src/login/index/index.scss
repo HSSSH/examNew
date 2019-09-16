@@ -1,0 +1,226 @@
+.start-index{
+  height: 100%;
+  position: relative;
+  .top-part{
+    width: 100%;
+    height: 100px;
+    position: absolute;
+    z-index: 2;
+    p{
+      display: inline-block;
+      text-align: center;
+      padding-top: 20px;
+      padding-left: 30px; 
+      &>label{
+        font-size: 30px;
+        color: #4AA9B8;
+        letter-spacing: 1px;
+        &:nth-child(3){
+          font-size: 12px;
+          letter-spacing: -1px;
+        }
+      }
+    }
+    ul{
+      display: inline-block;
+      position: absolute;
+      top:50%;
+      left: 50%;
+      transform:translate(-50%, -50%);
+      li{
+        display: inline-block;
+        height: 30px;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+        margin: 0 20px;
+        &.choose{
+          color: #49a9b9;
+          font-weight: bold;
+          border-bottom: solid 3px #49a9b9;
+        }
+        &.choose1{
+          font-weight: bold;
+        }
+      }
+    }
+    &>button{
+      float: right;
+      margin: 30px 10px;
+      width: 70px;
+      height: 30px;
+      color: #49a9b9;
+      border: solid 2px #49a9b9;
+      border-radius: 10px; 
+      background: none;
+      font-size: 15px;
+      cursor: pointer;
+      &.choose,&:hover{
+        color: white;
+        background: -webkit-linear-gradient(left, #4ba8b7, #95d7e3); /* Safari 5.1 - 6.0 */
+        background: -o-linear-gradient(right,#4ba8b7, #95d7e3); /* Opera 11.1 - 12.0 */
+        background: -moz-linear-gradient(right,#4ba8b7, #95d7e3); /* Firefox 3.6 - 15 */
+        background: linear-gradient(to right,#4ba8b7, #95d7e3); /* 标准的语法 */
+      }
+      &:nth-child(3){
+        margin-right: 80px; 
+      }
+    }
+  }
+}
+div.input-log{
+  height: 42px;
+  border: solid 1px #898989;
+  margin-bottom: 35px;
+  position: relative;
+  img{
+    position: absolute;
+    top: 4px;
+    left: 6px;
+  }
+  input{
+    position: absolute;
+    left: 40px;
+    right: 0;
+    width: calc(100% - 40px);
+    height: 100%;
+    padding: 5px;
+    border: none;
+    color: #736A6B;
+  }
+  i{
+    position: absolute;
+    left: 40px;
+    bottom: -20px;
+  }
+  &.check-code{
+    width: 175px;
+    input{
+      width: 130px;
+    }
+    .random-code{
+      position: absolute;
+      right: -129px;
+      top: -1px;
+      border: solid 1px #898989;
+    }
+  }
+}
+div.login-submit{
+  height: 64px;
+  text-align: center;
+  input,button{
+    width: 100%;
+    height: 100%;
+    background: #0C78C3;
+    font-size: 35px;
+    color: white;
+    border: none;
+    &:hover{
+      opacity: 0.8;
+    }
+    &.noAllow{
+      cursor: not-allowed;
+      &:hover{
+        opacity: 0.9;
+      }
+    }
+  }
+}
+input:-webkit-autofill , textarea:-webkit-autofill, select:-webkit-autofill {
+  -webkit-text-fill-color: #736A6B !important;
+  transition: background-color 5000s ease-in-out 5000s;
+}
+.error{
+  color: red;
+}
+
+.home-page{
+  height: 100%;
+  background: url(../../images/login/loginBack.jpg)no-repeat center;
+  background-size: cover;
+  .middle-part{
+    width: 100%;
+    height: calc(100% - 120px);
+    top: 120px;
+    position: relative;
+    &>img:nth-child(1),img:nth-child(2){
+      position: relative;
+      top:50%;
+      left: 13%;
+      transform:translateY(-50%);
+    }
+    &>img:nth-child(2){
+      margin-left: -260px;
+      margin-top: -180px;
+    }
+    .input-form{
+      width: 463px;
+      height: 540px;
+      background: url(../../images/login/3.png)no-repeat center;
+      position: absolute;
+      top: calc(50% - 270px);
+      left: calc(80% - 300px);
+      padding: 18px 40px 25px;
+      &>div:nth-child(1){
+        height: 55px;
+        text-align: center;
+        font-size: 33px;
+        font-weight: bold;  
+        color: white;
+      }
+      .login-form{
+        width: 100%;
+        height: calc(100% - 80px);
+        background: white;
+        padding: 40px;
+        &>p{
+          margin-top: 10px;
+          a{
+            cursor: pointer;
+            color: #6A6A6A;
+          }
+        }
+        &.register{
+          .input-log{
+            margin-bottom: 15px;
+          }
+          .agree-doc{
+            margin-top: 10px;
+            input{
+              width: 20px;
+              height: 15px;
+              position: relative;
+              top: 3px;
+              cursor: pointer;
+            }
+            a{
+              cursor: pointer;
+            }
+          }
+        }
+      }
+      &>p{
+        padding: 8px;
+        text-align: center;
+        font-size: 15px;
+        color: white;
+      }
+    }
+  }
+}
+.second-page{
+  height: 100%;
+  .el-carousel--horizontal{
+    height: 100%;
+    .el-carousel__item{
+      &:nth-child(3){
+        background: #1d1c24;
+      }
+      &:nth-child(4){
+      }
+      &:nth-child(5){
+      }
+    }
+  }
+}

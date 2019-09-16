@@ -20,11 +20,9 @@ axios.interceptors.response.use(function(response) {
   return response;
 }, function (error) {
   // 请求错误时做些事
-  if (error.response.status == '401') { // 未登录重定向值登录页面
-      router.replace({path: '/login'});
-  } else if (error.response.status == '403') {
-      router.replace({path: '/login'});
-  } 
+  if (error.response.status == '401' || error.response.status == '403') { // 未登录重定向值登录页面
+      router.replace({path: '/index'});
+  }
   return Promise.reject(error);
 });
 

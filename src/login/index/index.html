@@ -1,0 +1,88 @@
+<div class="start-index">
+    <div class="top-part">
+        <p>
+        <label>爻象诊断</label>
+        <br/>
+        <label>DETERMINE AND REVIEW</label>
+    </p>
+    <ul>
+        <li @click="pageIndex = 1" :class="{'choose1':pageIndex == 1}">首页</li>
+        <li @click="pageIndex = 2" :class="{'choose':pageIndex == 2}">爻象介绍</li>
+        <li @click="pageIndex = 3" :class="{'choose':pageIndex == 3}">诊断体验</li>
+        <li @click="pageIndex = 4" :class="{'choose':pageIndex == 4}">合作联系</li>
+    </ul>
+    <button :class="{'choose':state.indexType == 2}" @click="state.indexType = 2" >注册</button>
+    <button :class="{'choose':state.indexType == 1}" @click="state.indexType = 1" >登录</button>
+    </div>
+    <div class="home-page" v-if="pageIndex == 1">
+        <div class="middle-part">
+            <img src="@/images/login/elephant.png">
+            <img src="@/images/login/words.png">
+            <div class="input-form">
+                <div>{{state.indexType == 2?'注&nbsp;&nbsp;&nbsp;&nbsp;册':'登&nbsp;&nbsp;&nbsp;&nbsp;录'}}</div>
+                <div class="login-form" v-if="state.indexType == 1">
+                    <div class="input-log">
+                        <img src="@/images/login/iconUser.png"/>
+                        <input type="text" name="username" ref="loginUsername" placeholder="请输入手机号" required/>
+                    </div>
+                    <div class="input-log">
+                        <img src="@/images/login/iconPass.png"/>
+                        <input type="password" name="password" ref="loginPassword" placeholder="请输入密码" required/>
+                    </div>
+                    <div class="input-log check-code">
+                        <img src="@/images/login/iconPass.png"/>
+                        <input type="text" name="checkCode" placeholder="请输入验证码" v-model="check.inputCode" required/>
+                        <RandomCode :randomType="3" @getCode="getCode($event)" class="random-code"></RandomCode>
+                        <i v-if="check.codeError" class="error">验证码错误</i>
+                    </div>
+                    <div class="login-submit">
+                        <el-button type="primary" :loading="loading" id="loginBt1" @click.prevent="submit" :disabled="check.inputCode.toLowerCase() !== check.generateCode" :class="{'noAllow':check.inputCode.toLowerCase() !== check.generateCode}">{{loading?'请稍等':'登录'}}</el-button>
+                    </div>
+                    <i v-if="error" class="error">登录账号或密码错误</i>
+                    <p><a>忘记密码?</a></p>
+                </div>
+                <div class="login-form register" name="registerForm" v-if="state.indexType == 2">
+                    <div class="input-log">
+                        <img src="@/images/login/iconUser.png"/>
+                        <input type="text" v-model="reg.region" name="region" placeholder="请输入校区" required/>
+                        <i v-if="check.schoolError && reg.region==''" class="error">校区不能为空</i>
+                    </div>
+                    <div class="input-log">
+                        <img src="@/images/login/iconUser.png"/>
+                        <input type="text" v-model="reg.name" name="name" placeholder="请输入考生姓名" required/>
+                        <i v-if="check.nameError && reg.name==''" class="error">考生姓名不能为空</i>
+                    </div>
+                    <div class="input-log">
+                        <img src="@/images/login/iconUser.png"/>
+                        <input type="text" v-model="reg.username" name="regName" placeholder="请输入手机号" required/>
+                        <i v-if="check.userAlready" class="error">该号码已使用</i>
+                        <i v-if="check.phoneError && reg.username==''" class="error">手机号不能为空</i>
+                    </div>
+                    <div class="input-log">
+                        <img src="@/images/login/iconPass.png"/>
+                        <input type="password" v-model="reg.password" name="regPass" placeholder="请设置密码(6-16位)" required/>
+                        <i v-if="check.passwordError && reg.password==''" class="error">密码不能为空</i>
+                    </div>
+                    <div class="input-log">
+                        <img src="@/images/login/iconPass.png"/>
+                        <input type="password" v-model="reg.passwordConfirm" name="regPassConfirm" placeholder="确认密码" required/>
+                        <i v-if="check.checkPassWrong" class="error">确认密码不相同</i>
+                    </div>
+                    <div class="login-submit">
+                        <el-button type="primary" :loading="loading" id="regButton" :disabled="(reg.password !== reg.passwordConfirm) || check.userAlready" @click.prevent="registerNew">
+                            {{loading?'请稍等':'注册'}}
+                        </el-button>
+                    </div>
+                    <!--<div class="agree-doc"><input type="checkbox" v-model="reg.agreeReg"/>已阅读并同意<a>《网站注册及用户协议》</a></div>-->
+                </div>
+                <p>Copyright ©爻象教育 版权所有2018</p>
+            </div>
+        </div>
+    </div>
+    <div class="second-page" v-if="pageIndex == 2">
+        <el-carousel height="100%">
+            <el-carousel-item v-for="item in 1" :key=item>
+            </el-carousel-item>
+        </el-carousel>
+    </div>
+</div>
