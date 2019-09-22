@@ -134,7 +134,7 @@ export default {
     logout(){
       logout().then((res) => {
           if (res && res.ok == '1') {
-              this.$router.replace({name: 'Login'});
+              this.$router.replace({name: 'Index'});
           } else {
             this.$alert((res&&res.msg) || '登出失败！', '提示', {
                 confirmButtonText: '确定',

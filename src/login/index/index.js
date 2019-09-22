@@ -68,7 +68,6 @@ export default {
         }
     },
     mounted () {
-        
     },
     methods: {
         checkCodeValue() {
@@ -151,6 +150,8 @@ export default {
         },
         changeCarousel(val){
             this.state.carouselIndex = val;
-        }
+        },
+    },
+    destroyed() {
     }
 }

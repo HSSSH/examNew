@@ -68,6 +68,10 @@ div.report{
           }
       }
   }
+  .chart1{
+      width: 100%;
+      height: 300px;
+  }
 }
 </style>
 <template>
@@ -113,6 +117,11 @@ div.report{
                 <p>第四章掌握率：</p>
             </div>
         </div>
+        <div>
+            <div class="chart1" v-echarts-render="{options: echartOp1}">
+
+            </div>
+        </div>
     </div>
 </div>
 </template>
@@ -141,7 +150,48 @@ export default {
               {
                   children:[{background:'#9FEEC0'},{background:'#9FEEC0'},{background:'#FDD289'},{background:'#FDD289'},{background:'#9FEEC0'},{background:'#9FEEC0'},{background:'#FDD289'},{background:'#FDD289'},{background:'#9FEEC0'},{background:'#FDD289'},{background:'#FDD289'},{background:'#9FEEC0'}]
               },
-          ]
+          ],
+          echartOp1:{
+                title: {
+                },
+                tooltip: {
+                    trigger: 'axis'
+                },
+                legend: {
+                    show: false,
+                    // data:['个人','平均']
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                toolbox: {
+                    feature: {
+                    }
+                },
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: ['1','2','3','4','5','6','7']
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [
+                    {
+                        name:'个人',
+                        type:'line',
+                        data:[120, 132, 101, 134, 90, 260, 210]
+                    },
+                    {
+                        name:'平均',
+                        type:'line',
+                        data:[110, 182, 191, 143, 290, 230, 310]
+                    }
+                ]
+            }
       }
   },
   created() {

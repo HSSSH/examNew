@@ -1,6 +1,6 @@
 import Vue from 'vue';
-// import BScroll from 'better-scroll';
-// import echarts from 'echarts';
+import BScroll from 'better-scroll';
+import echarts from 'echarts';
 /*
 * echarts 配置指令
 * echarts-render="{options: options}"
