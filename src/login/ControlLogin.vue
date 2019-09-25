@@ -72,7 +72,7 @@
     import { login } from '@/api/login';
     export default {
         name: "ControlLogin",
-        data: function () {
+        data() {
             return {
                 error: false,
                 loading:false,
