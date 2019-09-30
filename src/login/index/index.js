@@ -68,6 +68,10 @@ export default {
         }
     },
     mounted () {
+        // chrome and ie
+        // document.documentElement.addEventListener('mousewheel',this.handleScroll,false)
+        //// firefox
+        // document.documentElement.addEventListener('DOMMouseScroll',this.handleScroll,false)
     },
     methods: {
         checkCodeValue() {
@@ -151,7 +155,28 @@ export default {
         changeCarousel(val){
             this.state.carouselIndex = val;
         },
+        handleScroll(e){
+            if(this.pageIndex != 2) return;
+            if(e.wheelDelta != undefined){
+                if(e.wheelDelta > 0){
+                    this.$refs.carousel.prev();
+                }
+                else{
+                    this.$refs.carousel.next();
+                }
+            }
+            else{
+                if(e.detail > 0){
+                    this.$refs.carousel.next();
+                }
+                else{
+                    this.$refs.carousel.prev();
+                }
+            }
+        }
     },
-    destroyed() {
+    beforeDestroy() {
+        // document.documentElement.removeEventListener('mousewheel',() => {});
+        // document.documentElement.removeEventListener('DOMMouseScroll',() => {});
     }
 }

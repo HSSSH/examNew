@@ -126,7 +126,7 @@ export default new Router({
                 component: UserList,
             }],
         },{
-            path: 'report',
+            path: 'report/:pid/:uid',
             name: 'Report',
             component: Report,
         }]

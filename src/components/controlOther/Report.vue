@@ -1,11 +1,9 @@
 <style lang="scss" scoped>
 div.report{
   .A4-size{
-    position: absolute;
-    left:50%;
-    margin-left: -500px;
     width: 1000px;
     padding: 30px 0;
+    // page-break-after: always;
   }
   .title{
     font-size: 35px;
@@ -82,23 +80,23 @@ div.report{
         <div class="mark-part">
             <div>
                 <p><span>个人信息</span></p>
-                <p>姓名:蔡若欣</p>
+                <p>姓名:{{userInfo.name}}</p>
                 <p>年级:六年级</p>
-                <p>科目:数学</p>
-                <p>就诊时间:</p>
-                <p>诊断编号:</p>
+                <p>科目:{{userInfo.subject}}</p>
+                <p>就诊时间:{{diagnosisTime}}</p>
+                <p>诊断编号:{{userInfo.code}}</p>
                 <img src="@/images/report/17.png">
             </div>
             <div>
                 <p><span>诊断结果</span></p>
-                <p>总分:54</p>
+                <p>总分:{{globalResultInfo.score}}</p>
                 <p>知识掌握率:</p>
-                <p>计算能力:4.4</p>
-                <p>归纳类比:4.4</p>
-                <p>语言能力:4.4</p>
-                <p>空间想象:4.4</p>
-                <p>逻辑猜想:4.4</p>
-                <p>转化能力:4.4</p>
+                <p>计算能力:{{globalResultInfo.abilityScore['计算能力']}}</p>
+                <p>归纳类比:{{globalResultInfo.abilityScore['归纳类比']}}</p>
+                <p>语言理解:{{globalResultInfo.abilityScore['语言理解']}}</p>
+                <p>空间想象:{{globalResultInfo.abilityScore['空间想象']}}</p>
+                <p>逻辑推理:{{globalResultInfo.abilityScore['逻辑推理']}}</p>
+                <p>转化迁移:{{globalResultInfo.abilityScore['转化迁移']}}</p>
             </div>
         </div>
         <div class="cell-part">
@@ -117,23 +115,37 @@ div.report{
                 <p>第四章掌握率：</p>
             </div>
         </div>
+    </div>
+    <div class="A4-size">
+        <table>
+            <thead>
+                <th></th>
+            </thead>
+        </table>
+    </div>
+    <div class="A4-size">
         <div>
             <div class="chart1" v-echarts-render="{options: echartOp1}">
 
-            </div>
+            </div>        
         </div>
     </div>
 </div>
 </template>
 
 <script>
-
+import { getReportUserInfo,getGlobalResult,getReportUserTime } from '@/api/report';
 export default {
   name: 'Report',
   components: {
   },
   data () {
       return {
+          userInfo: {},
+          globalResultInfo: {
+              abilityScore:{},
+              chapterRate:{}
+          },
           cellList:[
               {
                   children:[{background:'#FDD289'},{background:'#FDD289'},{background:'#FDD289'}]
@@ -194,6 +206,11 @@ export default {
             }
       }
   },
+  computed: {
+      diagnosisTime(){
+          return new Date(this.userInfo.diagnosisTime).toLocaleString()
+      }
+  },
   created() {
       this.cellList.forEach(item => {
           while(item.children.length < 16){
@@ -202,6 +219,17 @@ export default {
             })
           }
       })
+      getReportUserInfo(this.$route.params.pid,this.$route.params.uid).then((result) => {
+          this.userInfo = result.t;
+          getGlobalResult(this.userInfo.paperResultId).then((result) => {
+                this.globalResultInfo = result.t;
+                this.globalResultInfo.abilityScore = JSON.parse(this.globalResultInfo.abilityScore);
+                this.globalResultInfo.chapterRate = JSON.parse(this.globalResultInfo.chapterRate);
+          });
+      });
+      getReportUserTime(this.$route.params.pid,this.$route.params.uid).then((result) => {
+
+      });
   },
   methods: {
   }
