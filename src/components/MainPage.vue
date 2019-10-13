@@ -56,7 +56,7 @@
           position: absolute;
           width: 90px;
           right: calc(50% - 45px);
-          top: 55px;
+          top: 54px;
           li{
             background: white;
             padding: 5px 0 ;
@@ -90,7 +90,7 @@
         <div>
             {{currentUser.name}},欢迎你
             <ul>
-                <li>个人主页</li>
+                <li @click="goSinglePage">个人主页</li>
                 <li><a @click="logout">退出</a></li>
             </ul>
         </div>
@@ -131,6 +131,9 @@ export default {
   created() {
   },
   methods: {
+    goSinglePage(){
+      this.$router.push({name: 'UserPage'});
+    },
     logout(){
       logout().then((res) => {
           if (res && res.ok == '1') {

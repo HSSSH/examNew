@@ -8,6 +8,7 @@ import News from '@/components/MainPage/News';
 import AboutUs from '@/components/MainPage/AboutUs';
 import ContactUs from '@/components/MainPage/ContactUs';
 import ExamTable from '@/components/MainPage/ExamTable';
+import UserPage from '@/components/MainPage/UserPage';
 import DoTest from '@/components/DoTest';
 import RestPage from '@/components/RestPage';
 import TestResult from '@/components/TestResult';
@@ -72,6 +73,10 @@ export default new Router({
                 path: 'examTable',
                 name: 'ExamTable',
                 component: ExamTable,
+            }, {
+                path: 'userPage',
+                name: 'UserPage',
+                component: UserPage,
             }],
         },{
             path: 'guidePage/:examId',

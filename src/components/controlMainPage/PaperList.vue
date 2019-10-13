@@ -45,7 +45,7 @@ export default {
         })
       },
       checkReport(pid,uid){
-          this.$router.replace({path: '/ctrlApp/report/' + pid + '/' + uid});
+          this.$router.push({path: '/ctrlApp/report/' + pid + '/' + uid});
       }
   }
 }
