@@ -90,6 +90,10 @@ div.report{
       height: 300px;
       margin-bottom: 50px;
   }
+  .chart2{
+      height: 1000px;
+      margin-bottom: 50px;
+  }
   .table-common{
       width: 950px;
       font-size: 16px;
@@ -189,6 +193,13 @@ div.report{
             </tbody>
         </table>
     </div>
+    <div class="A4-size">
+        <div>
+            <div class="chart2" v-echarts-render="{options: echartOp2}">
+
+            </div>
+        </div>
+    </div>
 </div>
 </template>
 
@@ -199,17 +210,17 @@ export default {
   components: {
   },
   data () {
-      return {
-          keyWordList:['预备知识','第一章','第二章','第三章','第四章','第五章','第六章','第七章','第八章','第九章','第十章','第十一章','第十二章','第十三章',
-          '第十四章','第十五章','第十六章','第十七章','第十八章','第十九章','第二十章'],
-          userInfo: {},
-          globalResultInfo: {
-              abilityScore:{},
-              chapterRate:{},
-              knowledgeKeepStatus:{}
-          },
-          cellList:[],
-          echartOp1:{
+        return {
+            keyWordList:['预备知识','第一章','第二章','第三章','第四章','第五章','第六章','第七章','第八章','第九章','第十章','第十一章','第十二章','第十三章',
+            '第十四章','第十五章','第十六章','第十七章','第十八章','第十九章','第二十章'],
+            userInfo: {},
+            globalResultInfo: {
+                abilityScore:{},
+                chapterRate:{},
+                knowledgeKeepStatus:{}
+            },
+            cellList:[],
+            echartOp1:{
                 title: {
                     text: '模块一每题作答时间',
                     left : 'center'
@@ -252,40 +263,81 @@ export default {
                         data:[]
                     }
                 ]
-            }
-      }
-  },
-  computed: {
-      diagnosisTime(){
-          return new Date(this.userInfo.diagnosisTime).toLocaleString()
-      }
-  },
-  created() {
-      getReportUserInfo(this.$route.params.pid,this.$route.params.uid).then((result) => {
-          this.userInfo = result.t;
-          getGlobalResult(this.userInfo.paperResultId).then((result) => {
-                this.globalResultInfo = result.t;
-                this.globalResultInfo.abilityScore = JSON.parse(this.globalResultInfo.abilityScore);
-                this.globalResultInfo.knowledgeAcceptanceLevel = JSON.parse(this.globalResultInfo.knowledgeAcceptanceLevel);
-                this.dealCellList();
-                this.globalResultInfo.chapterRate = JSON.parse(this.globalResultInfo.chapterRate);
-                this.globalResultInfo.knowledgeKeepStatus = JSON.parse(this.globalResultInfo.knowledgeKeepStatus);
-                this.globalResultInfo.useTime = JSON.parse(this.globalResultInfo.useTime);
-                for(let key = 0;key < 50; key++){
-                    this.echartOp1.xAxis.data.push(key+1);
-                    this.echartOp1.series[0].data.push(this.globalResultInfo.useTime[key+1]);
+            },
+            echartOp2 : {
+                series: {
+                    type: 'sankey',
+                    layout:'none',
+                    focusNodeAdjacency: 'allEdges',
+                    data: [],
+                    links: []
                 }
-                this.globalResultInfo.sectionInfo = JSON.parse(this.globalResultInfo.sectionInfo);
-          });
-      });
-      getReportUserTime(this.$route.params.pid,this.$route.params.uid).then((result) => {
-          for(let key = 0;key < 50; key++){
-              this.echartOp1.series[1].data.push(JSON.parse(result.t)[key+1]);
-          }
-      });
-  },
-  methods: {
-      dealCellList(){
+            }
+        }
+    },
+    computed: {
+        diagnosisTime(){
+            return new Date(this.userInfo.diagnosisTime).toLocaleString()
+        }
+    },
+    created() {
+        getReportUserInfo(this.$route.params.pid,this.$route.params.uid).then((result) => {
+            this.userInfo = result.t;
+            getGlobalResult(this.userInfo.paperResultId).then((result) => {
+                    this.globalResultInfo = result.t;
+                    this.globalResultInfo.abilityScore = JSON.parse(this.globalResultInfo.abilityScore);
+                    this.globalResultInfo.knowledgeAcceptanceLevel = JSON.parse(this.globalResultInfo.knowledgeAcceptanceLevel);
+                    this.dealCellList();
+                    this.globalResultInfo.chapterRate = JSON.parse(this.globalResultInfo.chapterRate);
+                    this.globalResultInfo.knowledgeKeepStatus = JSON.parse(this.globalResultInfo.knowledgeKeepStatus);
+                    this.globalResultInfo.useTime = JSON.parse(this.globalResultInfo.useTime);
+                    for(let key = 0;key < 50; key++){
+                        this.echartOp1.xAxis.data.push(key+1);
+                        this.echartOp1.series[0].data.push(this.globalResultInfo.useTime[key+1]);
+                    }
+                    this.globalResultInfo.sectionInfo = JSON.parse(this.globalResultInfo.sectionInfo);
+                    this.globalResultInfo.chapterAbility = JSON.parse(this.globalResultInfo.chapterAbility);
+                    for(let chapter = 1;chapter < 20; chapter++){
+                        if(!this.globalResultInfo.chapterAbility[chapter]) {continue;}
+                        this.echartOp2.series.data.push({'name':String(chapter)});
+                        this.globalResultInfo.chapterAbility[chapter].forEach(item => {
+                            item.abilityCodes.split(',').forEach(ability => {
+                                this.echartOp2.series.links.push({
+                                    source: String(chapter),
+                                    target: ability,
+                                    value: 1
+                                });
+                            })
+                        })
+                    }
+                    for (let index = 1; index < 7; index++) {
+                        this.echartOp2.series.data.push({'name':('A' + index)});
+                    }
+                    console.log(this.echartOp2.series.data);
+                    console.log(this.echartOp2.series.links);
+                    // for(let chapter = 1;chapter < 20; chapter++){
+                    //     if(!this.globalResultInfo.chapterAbility[chapter]) {continue;}
+                    //     this.globalResultInfo.chapterAbility[chapter].forEach(item => {
+                    //         this.echartOp2.series.data.push({'name':item.knowledgeCode});
+                    //         item.abilityCodes.split(',').forEach(ability => {
+                    //             this.echartOp2.series.links.push({
+                    //                 source: item.knowledgeCode,
+                    //                 target: ability,
+                    //                 value: 1
+                    //             });
+                    //         })
+                    //     })
+                    // }
+            });
+        });
+        getReportUserTime(this.$route.params.pid,this.$route.params.uid).then((result) => {
+            for(let key = 0;key < 50; key++){
+                this.echartOp1.series[1].data.push(JSON.parse(result.t)[key+1]);
+            }
+        });
+    },
+    methods: {
+        dealCellList(){
             this.globalResultInfo.knowledgeAcceptanceLevel.forEach(item => {
                 let temp = [];
                 item.forEach(child => {
