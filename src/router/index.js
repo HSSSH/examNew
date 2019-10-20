@@ -22,6 +22,7 @@ import PaperList from '@/components/controlMainPage/PaperList';
 import UserList from '@/components/controlMainPage/UserList';
 import Report from '@/components/controlOther/Report';
 import ControlLogin from '@/login/ControlLogin';
+import Test from '@/login/Test';
 
 import store from '@/store/index';
 import { getLoginUser } from '@/api/login'
@@ -139,5 +140,9 @@ export default new Router({
         path: '/ctrlLogin',
         name: 'ControlLogin',
         component: ControlLogin,
+    },{
+        path: '/test',
+        name: 'Test',
+        component: Test,
     }]
 });

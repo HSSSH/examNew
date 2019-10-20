@@ -94,12 +94,47 @@ div.report{
       height: 1000px;
       margin-bottom: 50px;
   }
+  .chart3{
+      height: 2000px;
+      margin-bottom: 50px;
+  }
   .table-common{
       width: 950px;
       font-size: 16px;
       margin: 0 auto;
       td{
         padding: 10px;
+      }
+  }
+  .abiliy-card{
+      width: 800px;
+      margin: 20px auto 10px;
+      &>p{
+          font-size: 20px;
+          font-weight: bold;
+          text-align: center;
+          margin: 10px;
+      }
+      &>div{
+          border: solid 1px black;
+          vertical-align: top;
+          &:nth-child(2){
+                display: inline-block;
+                width: 340px;
+                height: 400px;
+          }
+          &:nth-child(3){
+                display: inline-block;
+                width: 440px;
+                height: 400px;
+                margin-left: 20px; 
+          }
+          &:nth-child(4){
+                display: inline-block;
+                width: 800px;
+                height: 300px;
+                margin-top: 20px 
+          }
       }
   }
 }
@@ -200,6 +235,31 @@ div.report{
             </div>
         </div>
     </div>
+    <div class="A4-size">
+        <div v-for="item in abilityEvaluateList" :key="item.keyName" class="abiliy-card">
+            <p>{{item.keyName}}</p>
+            <div>
+                <p>简评:</p>
+                <p>编码:{{item.abilityCode}}</p>
+                <p>得分:{{item.score}}</p>
+                <p>{{item.evaluate}}</p>
+            </div>
+            <div>
+                <p>知识点与能力对应图</p>
+            </div>
+            <div>
+                <p>示例与解释</p>
+                <p>{{item.explain}}</p>
+            </div>
+        </div>
+    </div>
+    <div class="A4-size">
+        <div>
+            <div class="chart3" v-echarts-render="{options: echartOp3}">
+
+            </div>
+        </div>
+    </div>
 </div>
 </template>
 
@@ -213,6 +273,7 @@ export default {
         return {
             keyWordList:['预备知识','第一章','第二章','第三章','第四章','第五章','第六章','第七章','第八章','第九章','第十章','第十一章','第十二章','第十三章',
             '第十四章','第十五章','第十六章','第十七章','第十八章','第十九章','第二十章'],
+            abilityKeyList:['计算能力','空间想象','语言理解','归纳类比','逻辑推理'],
             userInfo: {},
             globalResultInfo: {
                 abilityScore:{},
@@ -220,6 +281,7 @@ export default {
                 knowledgeKeepStatus:{}
             },
             cellList:[],
+            abilityEvaluateList:[],
             echartOp1:{
                 title: {
                     text: '模块一每题作答时间',
@@ -272,6 +334,17 @@ export default {
                     data: [],
                     links: []
                 }
+            },
+            matterList:['粗心大意','注意力不集中','畏难情绪','基础不好','思维不活跃'],
+            matterList2:['计算出错','审题不仔细','读不懂题','没有思路','知识记忆不牢','思考不严谨','情绪紧张','过分轻敌','学习动力问题','学习方法不合适','审题不仔细且知识记忆不牢'],
+            echartOp3 : {
+                series: {
+                    type: 'sankey',
+                    layout:'none',
+                    focusNodeAdjacency: 'allEdges',
+                    data: [],
+                    links: []
+                }
             }
         }
     },
@@ -313,8 +386,6 @@ export default {
                     for (let index = 1; index < 7; index++) {
                         this.echartOp2.series.data.push({'name':('A' + index)});
                     }
-                    console.log(this.echartOp2.series.data);
-                    console.log(this.echartOp2.series.links);
                     // for(let chapter = 1;chapter < 20; chapter++){
                     //     if(!this.globalResultInfo.chapterAbility[chapter]) {continue;}
                     //     this.globalResultInfo.chapterAbility[chapter].forEach(item => {
@@ -328,6 +399,37 @@ export default {
                     //         })
                     //     })
                     // }
+                    this.globalResultInfo.abilityEvaluate = JSON.parse(this.globalResultInfo.abilityEvaluate);
+                    this.abilityKeyList.forEach(key => {
+                        this.abilityEvaluateList.push(Object.assign({keyName:key}, this.globalResultInfo.abilityEvaluate[key]));
+                    });
+                    this.globalResultInfo.mistakeMatters = JSON.parse(this.globalResultInfo.mistakeMatters);
+                    this.globalResultInfo.commonMatters = JSON.parse(this.globalResultInfo.commonMatters);
+                    for (let index = 1; index < 70; index++) {
+                        this.echartOp3.series.data.push({'name':index});
+                    }
+                    this.matterList.forEach(item => {
+                        this.echartOp3.series.data.push({'name':item});
+                        if(this.globalResultInfo.mistakeMatters[item]) {
+                            this.globalResultInfo.mistakeMatters[item].wrongs.forEach(wrong => {
+                                this.echartOp3.series.links.push({
+                                    source: String(wrong),
+                                    target: item,
+                                    value: 1
+                                });
+                            })
+                        }
+                    })
+                    this.matterList2.forEach(item => {
+                        this.echartOp3.series.data.push({'name':item});
+                        if(this.globalResultInfo.commonMatters[item]) {
+                            this.echartOp3.series.links.push({
+                                source: this.globalResultInfo.commonMatters[item].mistakeMatter,
+                                target: item,
+                                value: 1
+                            });
+                        }
+                    })
             });
         });
         getReportUserTime(this.$route.params.pid,this.$route.params.uid).then((result) => {
