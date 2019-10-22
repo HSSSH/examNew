@@ -2,6 +2,7 @@
 <style lang="scss" scoped>
 .test{
     height: 100%;
+    font-size: 16px; 
 }
 .aside,.main{
     width: 150px;
@@ -22,10 +23,11 @@
         &.c1{
             background: url('background.png') no-repeat;
             div {
-                border: 10px solid hsla(0,0%,100%,.5);
+                border: 15px solid hsla(0,0%,100%,.5);
+                // border: 15px dotted yellow;
                 background: white;
                 background-clip: padding-box;
-                max-width: 20em;
+                max-width: 30em;
                 padding: 2em;
                 margin: 2em auto 0;
                 font: 100%/1.5 sans-serif;
@@ -33,13 +35,16 @@
         }
         &.c2{
             div {
-                width: 100px;
-                height: 60px;
-                margin: 25px;
+                width: 300px;
+                height: 200px;
+                margin: 50px;
                 background: yellowgreen;
                 box-shadow: 0 0 0 10px #655,
-                        0 0 0 15px deeppink,
-                        0 2px 5px 15px rgba(0,0,0,.6);
+                        0 0 0 25px deeppink,
+                        0 2px 5px 25px rgba(0,0,0,.6);
+                // box-shadow: 0 0 0 10px #655 inset,
+                //         0 0 0 25px deeppink,
+                //         0 2px 5px 25px rgba(0,0,0,.6);
             }
         }
         &.c3{
@@ -1737,12 +1742,14 @@
     <div class="main">
         <div v-if="current == 1" class="c1">
             <div>
-            Can I haz semi-transparent borders?
-            Pretty please?
+            background-clip:padding-box
+            <br/>默认：background-clip:border-box
+            <br/>背景延伸到边框
             </div>
         </div>
         <div v-if="current == 2" class="c2">
-            <div></div>
+            <div>扩张半径,元素圈外,用inset向内</div>
+            <!-- <div></div> -->
         </div>
         <div v-if="current == 3" class="c3">
             <div>Code Pirate</div>
