@@ -13,7 +13,7 @@
                     <i class="el-icon-menu"></i>
                     <span>菜单</span>
                 </template>
-                <el-menu-item v-for="item in titleList" :key="item.id" @click="current = item.id">{{item.id}}</el-menu-item>
+                <el-menu-item v-for="item in titleList" :key="item.id" @click="changeCurrent(item.id)">{{item.id}}</el-menu-item>
             </el-submenu>
         </el-menu>
     </div>
@@ -113,12 +113,12 @@
         </div>
         <div v-if="current == 31" class="c31">
             <div class="diamond">
-                <img src="http://csssecrets.io/images/adamcatlace.jpg" />
+                <img src="@/login/adamcatlace.jpg" />
             </div>
         </div>
         <div v-if="current == 32" class="c32">
-            <img src="http://csssecrets.io/images/adamcatlace.jpg" />
-            <img src="http://csssecrets.io/images/adam-sleeping.jpg" />
+            <img src="@/login/adamcatlace.jpg" />
+            <img src="@/login/adam-sleeping.jpg" />
         </div>
         <div v-if="current == 33" class="c33">
             <div>Hey, focus! You’re supposed to be looking at my corners, not reading my text. The text is just placeholder!</div>
@@ -164,11 +164,11 @@
             <div class="pie"></div>
         </div>
         <div v-if="current == 39" class="c39">
-            <div class="pie">0%</div>
-            <div class="pie">20%</div>
-            <div class="pie">40%</div>
-            <div class="pie">60%</div>
-            <div class="pie">80%</div>
+            <div class="pie39" :style="{'animation-delay':'0s'}"></div>
+            <div class="pie39" :style="{'animation-delay':'-20s'}"></div>
+            <div class="pie39" :style="{'animation-delay':'-40s'}"></div>
+            <div class="pie39" :style="{'animation-delay':'-60s'}"></div>
+            <div class="pie39" :style="{'animation-delay':'-80s'}"></div>
         </div>
         <div v-if="current == 40" class="c40">
             <div></div>
@@ -556,7 +556,6 @@
         data() {
             return {
                 current:'1',
-                // titleList:['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29']
                 titleList:[]
             }
         },
@@ -571,10 +570,11 @@
         },
         methods: {
             handleOpen(key, keyPath) {
-                console.log(key, keyPath);
             },
             handleClose(key, keyPath) {
-                console.log(key, keyPath);
+            },
+            changeCurrent(id){
+                this.current = id;
             },
         }
     };
