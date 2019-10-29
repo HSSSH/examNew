@@ -70,6 +70,17 @@
         <div v-if="current == 19" class="c19">
         </div>
         <div v-if="current == 20" class="c20">
+            <svg width="90" height="90" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="15" cy="15" r="15" fill="#ab4"/>
+                <circle cx="45" cy="15" r="15" fill="#655"/>
+                <circle cx="75" cy="15" r="15" fill="#e07"/>
+                <circle cx="15" cy="45" r="15" fill="#655"/>
+                <circle cx="45" cy="45" r="15" fill="hsl(15, 25%, 75%)"/>
+                <circle cx="75" cy="45" r="15" fill="#655"/>
+                <circle cx="15" cy="75" r="15" fill="#fb3"/>
+                <circle cx="45" cy="75" r="15" fill="#655"/>
+                <circle cx="75" cy="75" r="15" fill="#58a"/>
+            </svg>
             <div>Bacon ipsum dolor amet eu adipisicing elit tongue ground round ex fatback proident kielbasa ham hock. Sausage beef beef ribs aliquip t-bone mollit. Quis beef tri-tip sunt, cupim ut magna salami t-bone. Ut laboris bresaola ribeye biltong landjaeger. Chuck pork belly sed sausage.</div>
             <div>Bacon ipsum dolor amet eu adipisicing elit tongue ground round ex fatback proident kielbasa ham hock. Sausage beef beef ribs aliquip t-bone mollit. Quis beef tri-tip sunt, cupim ut magna salami t-bone. Ut laboris bresaola ribeye biltong landjaeger. Chuck pork belly sed sausage.</div>
         </div>
