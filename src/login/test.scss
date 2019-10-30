@@ -278,12 +278,15 @@
                 border: 2em solid transparent;
                 background: linear-gradient(white, white) padding-box,
                             url('background.png') border-box  0 / cover;
+
+                // border-image: 10% url('background.png');
+
                 width: 40em;
                 padding: 1em;
                 font: 100%/1.6 Baskerville, Palatino, serif;
 
-                // overflow: hidden;
-                // resize: both;
+                overflow: hidden;
+                resize: both;
             }
         }
         &.c22{
@@ -347,11 +350,36 @@
                 margin: 1em;
                 background: #fb3;
                 border-radius: 50% / 100% 100% 0 0;
+                // border-radius: 50% / 100%;
+                // border-radius: 8em / 5em;
+
+                // border-top-left-radius: 50% 100%;
+                // border-top-right-radius: 50% 100%;
+                // border-bottom-right-radius: 50% 0;
+                // border-bottom-left-radius: 50% 0;
             }
 
-            div:nth-of-type(2) { border-radius: 50% / 0 0 100% 100%; }
-            div:nth-of-type(3) { border-radius: 100% 0 0 100% / 50%; }
-            div:nth-of-type(4) { border-radius: 0 100% 100% 0 / 50%; }
+            div:nth-of-type(2) { 
+                border-radius: 50% / 0 0 100% 100%; 
+                // border-top-left-radius: 50% 0;
+                // border-top-right-radius: 50% 0;
+                // border-bottom-right-radius: 50% 100%;
+                // border-bottom-left-radius: 50% 100%;
+            }
+            div:nth-of-type(3) { 
+                border-radius: 100% 0 0 100% / 50%;
+                // border-top-left-radius: 100% 50%;
+                // border-top-right-radius: 0 50%;
+                // border-bottom-right-radius: 0 50%;
+                // border-bottom-left-radius: 100% 50%;
+            }
+            div:nth-of-type(4) { 
+                border-radius: 0 100% 100% 0 / 50%; 
+                // border-top-left-radius: 0 50%;
+                // border-top-right-radius: 100% 50%;
+                // border-bottom-right-radius: 100% 50%;
+                // border-bottom-left-radius: 0 50%;
+            }
         }
         &.c28{
             div {
