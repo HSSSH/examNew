@@ -138,12 +138,16 @@
             <div>Hey, focus! You’re supposed to be looking at my corners, not reading my text. The text is just placeholder!</div>
         </div>
         <div v-if="current == 35" class="c35">
+            <svg xmlns="http://www.w3.org/2000/svg" width="300" height="300" fill="#58a">
+                <polygon points="0,100 100,0 200,0 300,100 300,200 200,300 100,300 0,200" />
+            </svg>
             <div>Hey, focus! You’re supposed to be looking at my corners, not reading my text. The text is just placeholder!</div>
         </div>
         <div v-if="current == 36" class="c36">
             <div>Hey, focus! You’re supposed to be looking at my corners, not reading my text. The text is just placeholder!</div>
         </div>
         <div v-if="current == 37" class="c37">
+            <div>梯形</div>
             <nav>
                 <a href="#">Home</a>
                 <a href="#" class="selected">Projects</a>
@@ -190,9 +194,26 @@
             <div></div>
         </div>
         <div v-if="current == 41" class="c41">
-            <div class="pie">20%</div>
-            <div class="pie">60%</div>
-            <div class="pie animated">0%</div>
+            <!-- <div class="pie">
+                <svg width="100" height="100">
+                    <circle r="32" cx="50" cy="50" stroke-dasharray="5 5"></circle>
+                </svg>
+            </div> -->
+            <div class="pie">
+                <svg viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                    <circle r="16" cx="16" cy="16" stroke-dasharray="20 100"></circle>
+                </svg>
+            </div>
+            <div class="pie">
+                <svg viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                    <circle r="16" cx="16" cy="16" stroke-dasharray="60 100"></circle>
+                </svg>
+            </div>
+            <div class="pie animated">
+                <svg viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                    <circle r="16" cx="16" cy="16" stroke-dasharray="0 100"></circle>
+                </svg>
+            </div>
         </div>
         <div v-if="current == 42" class="c42">
             <div></div>
@@ -209,10 +230,10 @@
             <div class="cutout">Cutout corners</div>
         </div>
         <div v-if="current == 46" class="c46">
-            <img src="http://csssecrets.io/images/tiger.jpg" />
+            <img src="@/login/adamcatlace.jpg" />
         </div>
         <div v-if="current == 47" class="c47">
-            <div style="background-image:url(http://csssecrets.io/images/tiger.jpg)" class="tinted-image"></div>
+            <div class="tinted-image"></div>
         </div>
         <div v-if="current == 48" class="c48">
             <main>
@@ -573,7 +594,7 @@
         watch: {
         },
         created() {
-            for(let i = 1;i < 94;i++){
+            for(let i = 1;i < 52;i++){
                 this.titleList.push({id:String(i)})
             }
         },
