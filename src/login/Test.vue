@@ -217,6 +217,8 @@
         </div>
         <div v-if="current == 42" class="c42">
             <div></div>
+            <div></div>
+            <p>使用扩张半径控制</p>
         </div>
         <div v-if="current == 43" class="c43">
             <div></div>
@@ -225,11 +227,25 @@
             <div></div>
         </div>
         <div v-if="current == 45" class="c45">
+            <svg xmlns="http://www.w3.org/2000/svg" width="300" height="300" fill="#fb3">
+                <polygon points="0,100 100,0 200,0 300,100 300,200 200,300 100,300 0,200"/>
+            </svg>
+            <br/>
             <div class="speech">Speech bubble</div>
             <div class="dotted">Dotted border</div>
             <div class="cutout">Cutout corners</div>
+            <br/>
+            <div class="speech add">Speech bubble</div>
+            <div class="dotted add">Dotted border</div>
+            <div class="cutout add">Cutout corners</div>
+            <p>drop-shadow()平稳退化，滤镜接收参数基本与box-shadow()一样，不包括扩张半径,inset。</p>
         </div>
         <div v-if="current == 46" class="c46">
+            <img src="@/login/adamcatlace.jpg" />
+            <img src="@/login/adamcatlace.jpg" />
+            <img src="@/login/adamcatlace.jpg" />
+            <img src="@/login/adamcatlace.jpg" />
+            <img src="@/login/adamcatlace.jpg" />
             <img src="@/login/adamcatlace.jpg" />
         </div>
         <div v-if="current == 47" class="c47">
@@ -237,9 +253,9 @@
         </div>
         <div v-if="current == 48" class="c48">
             <main>
-            <blockquote>“The only way to get rid of a temptation is to yield to it. Resist it, and your soul grows sick with longing for the things it has forbidden to itself, with desire for what its monstrous laws have made monstrous and unlawful.”</em>
-            <footer>— <cite>Oscar Wilde, The Picture of Dorian Gray</cite></footer>
-            </blockquote>
+                <blockquote>“The only way to get rid of a temptation is to yield to it. Resist it, and your soul grows sick with longing for the things it has forbidden to itself, with desire for what its monstrous laws have made monstrous and unlawful.”<em/>
+                    <footer>— <cite>Oscar Wilde, The Picture of Dorian Gray</cite></footer>
+                </blockquote>
             </main>
         </div>
         <div v-if="current == 49" class="c49">
