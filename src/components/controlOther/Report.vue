@@ -479,6 +479,7 @@ export default {
             var oPop = window.open('','oPop');
             var titleStr = ""
             var newstr = document.getElementById('pdfDom').innerHTML;
+            // console.log(newstr);
             oPop.document.body.innerHTML = titleStr + newstr;
 
             var HKEY_Root,HKEY_Path,HKEY_Key;

@@ -21,6 +21,7 @@ import ControlMainPage from '@/components/ControlMainPage';
 import PaperList from '@/components/controlMainPage/PaperList';
 import UserList from '@/components/controlMainPage/UserList';
 import Report from '@/components/controlOther/Report';
+import Report2 from '@/components/controlOther/Report2';
 import ControlLogin from '@/login/ControlLogin';
 import Test from '@/login/Test';
 
@@ -135,6 +136,10 @@ export default new Router({
             path: 'report/:pid/:uid',
             name: 'Report',
             component: Report,
+        },{
+            path: 'report2',
+            name: 'Report2',
+            component: Report2,
         }]
     },{
         path: '/ctrlLogin',
