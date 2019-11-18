@@ -25,12 +25,12 @@
             </div>
         </div>
         <div v-if="current == 2" class="c2">
-            <div>扩张半径,元素圈外,用inset向内</div>
-            <!-- <div>元素2</div> -->
-            <!-- <div>outline轮廓线矩形描边，不会占据空间</div> -->
+            <div>扩张半径,元素圈外,用inset向内,投影不影响布局</div>
+            <div>元素2 inset</div>
+            <div>outline轮廓线矩形描边，不会占据空间，不贴合圆角,之后可能改善</div>
         </div>
         <div v-if="current == 3" class="c3">
-            <div>背景图定位，扩展和回退方案</div>
+            <div>背景图定位，background-position扩展属性。回退方案，贴合边沿</div>
         </div>
         <div v-if="current == 4" class="c4">
             <div>偏移量与内边距一致，background-origin方案，默认padding-box</div>
@@ -91,6 +91,7 @@
         </div>
         <div v-if="current == 23" class="c23">
             <div>Bacon ipsum dolor amet eu adipisicing elit tongue ground round ex fatback proident kielbasa ham hock. Sausage beef beef ribs aliquip t-bone mollit. Quis beef tri-tip sunt, cupim ut magna salami t-bone. Ut laboris bresaola ribeye biltong landjaeger. Chuck pork belly sed sausage.</div>
+            <p></p>
         </div>
         <div v-if="current == 24" class="c24">
             <div>Bacon ipsum dolor amet eu adipisicing elit tongue ground round ex fatback proident kielbasa ham hock. Sausage beef beef ribs aliquip t-bone mollit. Quis beef tri-tip sunt, cupim ut magna salami t-bone. Ut laboris bresaola ribeye biltong landjaeger. Chuck pork belly sed sausage.</div>

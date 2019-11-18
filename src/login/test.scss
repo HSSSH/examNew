@@ -42,20 +42,21 @@
                     box-shadow: 0 0 0 10px #655,
                         0 0 0 25px deeppink,
                         0 2px 5px 25px rgba(0,0,0,.6);
-                // box-shadow: 0 0 0 10px #655 inset,
-                //         0 0 0 25px deeppink,
-                //         0 2px 5px 25px rgba(0,0,0,.6);
                 }
                 &:nth-child(2){
+                    box-shadow: 0 0 0 10px #655 inset,
+                        0 0 0 30px deeppink,
+                        0 2px 5px 30px rgba(0,0,0,.6);
+                }
+                &:nth-child(3){
                     border: 10px solid #655;
                     outline: 15px solid deeppink;
+                    // border-radius: 15px;
                 }
             }
         }
         &.c3{
             div {
-                // background: url(http://csssecrets.io/images/code-pirate.svg)
-                //             no-repeat bottom right #58a;
                 background: url('add.png')no-repeat bottom right #58a;
                 background-position: right 20px bottom 10px;
                 
@@ -112,7 +113,6 @@
             // background: linear-gradient(#fb3 20%,#58a 80%);
 
             // background: linear-gradient(#fb3 50%,#58a 50%);
-            // background-size: 100% 30px;
 
             background: linear-gradient(#fb3 50%, #58a 0);
             background-size: 100% 30px;
@@ -135,6 +135,11 @@
             background-size: 42.4px 42.4px;
         }
         &.c10{
+            // background: linear-gradient(60deg, 
+            //   #fb3 25%, #58a 0, #58a 50%,
+            //   #fb3 0, #fb3 75%, #58a 0);
+            // background-size: 100px 173px;
+
             background: repeating-linear-gradient(60deg, 
               #fb3, #fb3 15px,
               #58a 0, #58a 30px);
@@ -300,6 +305,9 @@
                 
                 max-width: 20em;
                 font: 100%/1.6 Baskerville, Palatino, serif;
+
+                overflow: hidden;
+                resize: both;
             }
         }
         &.c23{
@@ -311,6 +319,16 @@
                 
                 max-width: 20em;
                 font: 100%/1.6 Baskerville, Palatino, serif;
+
+                overflow: hidden;
+                resize: both;
+            }
+            p{
+                margin-top: 20px;
+                width: 200px;
+                height: 200px;
+                background: repeating-linear-gradient(-45deg, red 0, red 1em, transparent 0, transparent 2em,
+                #58a 0, #58a 3em, transparent 0, transparent 4em);
             }
         }
         &.c24{
@@ -397,12 +415,15 @@
             div:nth-of-type(4) { border-radius: 0 0 0 100%; }
         }
         &.c29{
-            .button { transform: skewX(45deg); }
+            .button { 
+                transform: skewX(45deg); 
+            }
 
             .button {
                 display: inline-block;
                 padding: .5em 1em;
-                border: 0; margin: .5em;
+                border: 0; 
+                margin: .5em;
                 background: #58a;
                 color: white;
                 text-transform: uppercase;
@@ -410,7 +431,9 @@
                 font: bold 200%/1 sans-serif;
             }
 
-            .button > div { transform: skewX(-45deg); }
+            .button > div { 
+                transform: skewX(-45deg); 
+            }
         }
         &.c30{
             .button {
