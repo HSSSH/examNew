@@ -10,7 +10,6 @@
         @close="handleClose">
             <el-submenu index="0">
                 <template slot="title">
-                    <i class="el-icon-menu"></i>
                     <span>菜单</span>
                 </template>
                 <el-menu-item v-for="item in titleList" :key="item.id" @click="changeCurrent(item.id)">{{item.id}}</el-menu-item>
