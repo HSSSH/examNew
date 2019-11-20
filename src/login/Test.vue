@@ -121,6 +121,7 @@
         <div v-if="current == 30" class="c30">
             <a href="#yolo" class="button"><div>Click me</div></a>
             <button class="button"><div>Click me</div></button>
+            <p>利用伪元素做背景</p>
         </div>
         <div v-if="current == 31" class="c31">
             <div class="diamond">
@@ -130,6 +131,7 @@
         <div v-if="current == 32" class="c32">
             <img src="@/login/adamcatlace.jpg" />
             <img src="@/login/adam-sleeping.jpg" />
+            <p>clip-path特性从SVG借鉴过来，可平稳退化(无效果)，可参与动画(同一形状函数，点数量一样)</p>
         </div>
         <div v-if="current == 33" class="c33">
             <div>Hey, focus! You’re supposed to be looking at my corners, not reading my text. The text is just placeholder!</div>
@@ -145,6 +147,7 @@
         </div>
         <div v-if="current == 36" class="c36">
             <div>Hey, focus! You’re supposed to be looking at my corners, not reading my text. The text is just placeholder!</div>
+            <p>clip-path可同时使用百分比和数值</p>
         </div>
         <div v-if="current == 37" class="c37">
             <div>梯形</div>
