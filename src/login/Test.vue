@@ -18,6 +18,8 @@
     </div>
     <div class="main">
         <div v-if="current == 1" class="c1">
+            <p>CSS读书笔记<br/>1.边框<br/>2.背景<br/>3.形状<br/>4.效果</p>
+            <p>五彩斑斓的CSS世界<br/>1.生硬的"边框"，其实可以这么玩<br/>2.如何用一个"背景"，让页面活灵活现<br/>3.巧妙地用css设计属于你的"形状"<br/>4.css中各种奇妙的效果，你知道多少</p>
             <div>
             background-clip:padding-box
             <br/>默认：background-clip:border-box

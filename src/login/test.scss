@@ -21,6 +21,12 @@
         float: left;
         &.c1{
             background: url('background.png') no-repeat;
+            p{
+                color: white;
+                display: inline-block;
+                width: 500px;
+                text-align: center;
+            }
             div {
                 border: 15px solid hsla(0,0%,100%,.5);
                 // border: 15px dotted yellow;
