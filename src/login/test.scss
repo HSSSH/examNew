@@ -739,17 +739,20 @@
                 vertical-align: top;
                 margin: 10px;
                 transform: rotate(-90deg);
-            }
-
-            svg {
-                // background: yellowgreen;
-                border-radius: 50%;
-            }
-
-            circle {
-                fill: yellowgreen;
-                stroke: #655;
-                stroke-width: 32;
+                // transform: rotate(-90deg);
+                svg {
+                    // background: yellowgreen;
+                    border-radius: 50%;
+                    circle:nth-child(1){
+                        fill: yellowgreen;
+                        // fill: yellow;
+                        stroke: #655;
+                        stroke-width: 32;
+                    }
+                    circle:nth-child(2){
+                        fill: #655;
+                    }
+                }
             }
 
             @keyframes grow41 { to { stroke-dasharray: 100 100 } }
@@ -805,7 +808,7 @@
                 background: #fb3;
                 font: 200%/1.6 Baskerville, Palatino, serif;
                 text-align: center;
-                box-shadow: .1em .1em .3em rgba(0,0,0,.5);
+                // box-shadow: .1em .1em .3em rgba(0,0,0,.5);
                 &.add{
                     -webkit-filter: drop-shadow(.1em .1em .1em rgba(0,0,0,.5));
                     filter: drop-shadow(.1em .1em .1em rgba(0,0,0,.5));
@@ -904,12 +907,12 @@
                 padding: 1em;
                 max-width: 23em;
                 min-height: 10em;
-                background: hsla(0,0%,100%,.25) border-box;
                 overflow: hidden;
                 border-radius: .3em;
                 box-shadow: 0 0 0 1px hsla(0,0%,100%,.3) inset,
-                            0 .5em 1em rgba(0, 0, 0, 0.6);
+                0 .5em 1em rgba(0, 0, 0, 0.6);
                 text-shadow: 0 1px 1px hsla(0,0%,100%,.3);
+                // background: hsla(0,0%,100%,.5) border-box;
             }
 
             main::before {
