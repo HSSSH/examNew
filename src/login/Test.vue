@@ -199,12 +199,11 @@
             <div></div>
         </div>
         <div v-if="current == 41" class="c41">
-            <!-- <div class="pie">
+            <div class="pie">
                 <svg width="100" height="100">
-                    <circle r="25" cx="50" cy="50"></circle>
-                    <circle r="1" cx="50" cy="50"></circle>
+                    <circle r="25" cx="50" cy="50" stroke-dasharray="5 5"></circle>
                 </svg>
-            </div> -->
+            </div>
             <!-- <div class="pie">
                 <svg width="100" height="100">
                     <circle r="32" cx="50" cy="50" stroke-dasharray="5 5"></circle>

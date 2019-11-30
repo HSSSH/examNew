@@ -122,6 +122,8 @@
 
             background: linear-gradient(#fb3 50%, #58a 0);
             background-size: 100% 30px;
+
+            // background-repeat: no-repeat; 
         }
         &.c8{
             background: linear-gradient(to right, #fb3 50%, #58a 0);
@@ -145,6 +147,8 @@
             //   #fb3 25%, #58a 0, #58a 50%,
             //   #fb3 0, #fb3 75%, #58a 0);
             // background-size: 100px 173px;
+
+            // background-repeat:no-repeat;
 
             background: repeating-linear-gradient(60deg, 
               #fb3, #fb3 15px,
@@ -259,7 +263,7 @@
                 linear-gradient(90deg, #fb3 11px, transparent 0),
                 linear-gradient(90deg, #ab4 23px, transparent 0),
                 linear-gradient(90deg, #655 23px, transparent 0);
-            // background-size: 61px 100%, 41px 100%;
+            background-size: 61px 100%, 41px 100%;
             background-size: 83px 100%, 61px 100%, 41px 100%;
         }
         &.c20{
@@ -865,6 +869,8 @@
                     filter: saturate(4);
                 }
                 &:nth-child(4) {
+                    // -webkit-filter: saturate(20);
+                    // filter: saturate(20);
                     // -webkit-filter: saturate(20) hue-rotate(180deg);
                     // filter: saturate(20) hue-rotate(180deg);
                     -webkit-filter: hue-rotate(295deg);
