@@ -5,7 +5,7 @@
 }
 </style>
 <template>
-<div class="report2" id="rr">
+<div class="report2" id="rr" style="width: 795px">
     <div class="chart1" v-echarts-render="{options: echartOp1}" style="width: 400px;height: 250px;">
 
     </div>
@@ -47,7 +47,8 @@ export default {
                     type: 'line',
                     areaStyle: {}
                 }]
-            }
+            },
+            PDF: new JsPDF('', 'pt', 'a4')
         }
     },
     computed: {
@@ -62,29 +63,34 @@ export default {
             html2Canvas(document.getElementById('rr'), {
                 allowTaint: true
             })
-            .then(function (canvas) {
-                let contentWidth = canvas.width
-                let contentHeight = canvas.height
-                let pageHeight = contentWidth / 592.28 * 841.89
-                let leftHeight = contentHeight
-                let position = 0
-                let imgWidth = 595.28
-                let imgHeight = 592.28 / contentWidth * contentHeight
-                let pageData = canvas.toDataURL('image/jpeg', 1.0)
-                let PDF = new JsPDF('', 'pt', 'a4')
-                if (leftHeight < pageHeight) {
-                PDF.addImage(pageData, 'JPEG', 0, 0, imgWidth, imgHeight)
-                } else {
-                    while (leftHeight > 0) {
-                        PDF.addImage(pageData, 'JPEG', 0, position, imgWidth, imgHeight)
-                        leftHeight -= pageHeight
-                        position -= 841.89
-                        if (leftHeight > 0) {
-                        PDF.addPage()
-                        }
-                    }
-                }
-                PDF.save('title' + '.pdf')
+            .then(canvas => {
+                let contentWidth = canvas.width;
+                let contentHeight = canvas.height;
+                let pageData = canvas.toDataURL('image/jpeg', 1.0);
+                this.PDF.addImage(pageData, 'JPEG', 0, 0, contentWidth, contentHeight);
+                this.PDF.addPage();
+                this.PDF.addImage(pageData, 'JPEG', 0, 0, contentWidth, contentHeight);
+                // let pageHeight = contentWidth / 592.28 * 841.89;
+                // let imgWidth = 595.28;
+                // let imgHeight = imgWidth / contentWidth * contentHeight;
+                // let leftHeight = contentHeight;
+                // let position = 0;
+                // let pageData = canvas.toDataURL('image/jpeg', 1.0);
+                // let PDF = new JsPDF('', 'pt', 'a4');
+                // if (leftHeight < pageHeight) {
+                //     PDF.addImage(pageData, 'JPEG', 0, 0, imgWidth, imgHeight);
+                // } else {
+                //     while (leftHeight > 0) {
+                //         PDF.addImage(pageData, 'JPEG', 0, position, imgWidth, imgHeight);
+                //         leftHeight -= pageHeight;
+                //         position -= 841.89;
+                //         if (leftHeight > 0) {
+                //             PDF.addPage();
+                //         }
+                //     }
+                // }
+                
+                this.PDF.save('title' + '.pdf');
             });
         }
     }
