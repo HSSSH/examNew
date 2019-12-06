@@ -97,11 +97,13 @@ export default new Router({
           name: 'TestResult',
           component: TestResult
         }]
-    },{
+    },
+    {
         path: '/index',
         name: 'Index',
         component: Index
-    },{
+    },
+    {
 		path: '*',
         name: 'NotFound',
         component: NotFound

@@ -7,10 +7,10 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 
 import '@/utils/smc-directives';
-// import htmlToPdf from '@/utils/htmlToPdf'
+import htmlToPdf from '@/utils/htmlToPdf'
 
 Vue.use(ElementUI);
-// Vue.use(htmlToPdf);
+Vue.use(htmlToPdf);
 // import { debug } from '@/services/constant';
 axios.defaults.withCredentials = true;
 Vue.prototype.$http = axios;
