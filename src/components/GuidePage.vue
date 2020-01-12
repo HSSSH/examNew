@@ -329,7 +329,7 @@ export default {
 	    }
   },
   created() {
-    getPaperList('aleady').then(data => {
+    getPaperList('1','').then(data => {
       let chooseList = data.filter(item => {
         return item.id == this.$route.params.examId;
       });

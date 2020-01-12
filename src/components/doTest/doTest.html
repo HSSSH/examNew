@@ -13,11 +13,11 @@
             <span v-show="data.noBlink">{{leftTimeShow}}</span>
         </div>
         <div class="mark-flag">
-            <div v-if="paper.currentSection == 2">
+            <div v-if="paper.sections[paper.currentSection - 1].material">
                 <img src="@/images/doTest/calculate.png" @click="data.showCalculator = !data.showCalculator"><br/>
                 <span>计算器</span>
             </div>
-            <div v-if="paper.currentSection == 2">
+            <div v-if="paper.sections[paper.currentSection - 1].material">
                 <img src="@/images/doTest/mark-pen.png"><br/>
                 <span>记号笔</span>
             </div>
@@ -50,7 +50,7 @@
             </div>
         </div>
     </div>
-    <div class="material-part" v-if="paper.currentSection == 2" v-better-scroll>
+    <div class="material-part" v-if="paper.sections[paper.currentSection - 1].hasMaterial" v-better-scroll>
         <div>
             <div class="triangle-top"><span>材</span><span>料</span></div>
             <div>
@@ -58,7 +58,7 @@
             </div>
         </div>
     </div>
-    <div class="scroll-part" :class="{'halfScreen':paper.currentSection == 2}" v-better-scroll>
+    <div class="scroll-part" :class="{'halfScreen':paper.sections[paper.currentSection - 1].hasMaterial}" v-better-scroll>
         <div>
             <div class="progress-part">
                 <span>答题进度</span>

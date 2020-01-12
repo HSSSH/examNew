@@ -242,7 +242,7 @@ export default {
 	  }
   },
   created() {
-    getPaperList('aleady').then(data => {
+    getPaperList('1','').then(data => {
       this.paperList = data;
     });
   },

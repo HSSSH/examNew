@@ -1,29 +1,32 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import App from '@/App';
-import MainPage from '@/components/MainPage';
-import Home from '@/components/MainPage/Home';
-import AbilityTest from '@/components/MainPage/AbilityTest';
-import News from '@/components/MainPage/News';
-import AboutUs from '@/components/MainPage/AboutUs';
-import ContactUs from '@/components/MainPage/ContactUs';
-import ExamTable from '@/components/MainPage/ExamTable';
-import UserPage from '@/components/MainPage/UserPage';
-import DoTest from '@/components/DoTest';
-import RestPage from '@/components/RestPage';
-import TestResult from '@/components/TestResult';
-import GuidePage from '@/components/GuidePage';
-import Index from '@/login/Index';
-import NotFound from '@/NotFound';
 
-import ControlApp from '@/ControlApp';
-import ControlMainPage from '@/components/ControlMainPage';
-import PaperList from '@/components/controlMainPage/PaperList';
-import UserList from '@/components/controlMainPage/UserList';
-import Report from '@/components/controlOther/Report';
-import Report2 from '@/components/controlOther/Report2';
-import ControlLogin from '@/login/ControlLogin';
-import Test from '@/login/Test';
+//懒加载
+const App = () => import(/* webpackChunkName: "group-app"*/'@/App');
+const Index = () => import(/* webpackChunkName: "group-app"*/'@/login/Index');
+const NotFound = () => import(/* webpackChunkName: "group-app"*/'@/NotFound');
+
+const MainPage = () => import(/* webpackChunkName: "group-mainPage"*/'@/components/MainPage');
+const Home = () => import(/* webpackChunkName: "group-mainPage"*/'@/components/MainPage/Home');
+const AbilityTest = () => import(/* webpackChunkName: "group-mainPage"*/'@/components/MainPage/AbilityTest');
+const News = () => import(/* webpackChunkName: "group-mainPage"*/'@/components/MainPage/News');
+const AboutUs = () => import(/* webpackChunkName: "group-mainPage"*/'@/components/MainPage/AboutUs');
+const ContactUs = () => import(/* webpackChunkName: "group-mainPage"*/'@/components/MainPage/ContactUs');
+const ExamTable = () => import(/* webpackChunkName: "group-mainPage"*/'@/components/MainPage/ExamTable');
+const UserPage = () => import(/* webpackChunkName: "group-mainPage"*/'@/components/MainPage/UserPage');
+
+const DoTest = () => import(/* webpackChunkName: "group-doTest"*/'@/components/DoTest');
+const RestPage = () => import(/* webpackChunkName: "group-doTest"*/'@/components/RestPage');
+const TestResult = () => import(/* webpackChunkName: "group-doTest"*/'@/components/TestResult');
+const GuidePage = () => import(/* webpackChunkName: "group-doTest"*/'@/components/GuidePage');
+
+const ControlApp = () => import(/* webpackChunkName: "group-controlApp"*/'@/ControlApp');
+const ControlMainPage = () => import(/* webpackChunkName: "group-controlApp"*/'@/components/ControlMainPage');
+const PaperList = () => import(/* webpackChunkName: "group-controlApp"*/'@/components/controlMainPage/PaperList');
+const UserList = () => import(/* webpackChunkName: "group-controlApp"*/'@/components/controlMainPage/UserList');
+const Report = () => import(/* webpackChunkName: "group-controlApp"*/'@/components/controlOther/Report');
+const Report2 = () => import(/* webpackChunkName: "group-controlApp"*/'@/components/controlOther/Report2');
+const ControlLogin = () => import(/* webpackChunkName: "group-controlApp"*/'@/login/ControlLogin');
 
 import store from '@/store/index';
 import { getLoginUser } from '@/api/login'
@@ -147,9 +150,5 @@ export default new Router({
         path: '/ctrlLogin',
         name: 'ControlLogin',
         component: ControlLogin,
-    },{
-        path: '/test',
-        name: 'Test',
-        component: Test,
     }]
 });

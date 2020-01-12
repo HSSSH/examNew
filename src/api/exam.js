@@ -1,10 +1,11 @@
 import axios from 'axios';
 
 //获取测试卷列表
-export function getPaperList(status) {
+export function getPaperList(status,subjectId) {
     return axios.get('/paper/listPapers',{
         params: {
-            status: status
+            status: status,
+            subjectId: subjectId
         }
     })
     .then(res => res.data);
