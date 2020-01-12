@@ -109,5 +109,25 @@
             </div>
         </div>
     </div>
+    <el-dialog
+        title="提示"
+        :visible.sync="dialogVisible1"
+        width="300px"
+        :before-close="handleClose1">
+        <span>模块{{paper.currentSection}}结束!</span>
+        <span slot="footer" class="dialog-footer">
+            <el-button type="primary" @click="handleClose1">确 定</el-button>
+        </span>
+    </el-dialog>
+    <el-dialog
+        title="提示"
+        :visible.sync="dialogVisible2"
+        width="400px"
+        :before-close="handleClose2">
+        <span>您已完成此次测试，请耐心等待我们的专业老师与您沟通测试结果，助您进步！</span>
+        <span slot="footer" class="dialog-footer">
+            <el-button type="primary" @click="handleClose2">确 定</el-button>
+        </span>
+    </el-dialog>
     <!-- <div class="move-calc" v-show="data.showCalculator" v-include="'partials/dialogWindow/calculator.html'"></div> -->
 </div>

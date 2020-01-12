@@ -56,6 +56,16 @@
         <p>{{breakTimeSec}}</p>
         <button class="bt-type3" @click="jump()">跳过休息</button>
     </div>
+    <el-dialog
+        title="提示"
+        :visible.sync="dialogVisible"
+        width="300px"
+        :before-close="handleClose">
+        <span>模块{{paper.currentSection}}开始!</span>
+        <span slot="footer" class="dialog-footer">
+            <el-button type="primary" @click="handleClose">确 定</el-button>
+        </span>
+    </el-dialog>
 </div>
 </template>
 
@@ -68,7 +78,8 @@ export default {
     return {
       interval: {},
       breakTimeSec: 60,  //初始默认60s
-      paper: {}
+      paper: {},
+      dialogVisible: false
     }
   },
   created() {
@@ -94,17 +105,15 @@ export default {
         clearInterval(this.interval);
         delete this.paper.breakTimeSec;
         localStorage.setItem('testPaper' + this.paper.id, JSON.stringify(this.paper));
-        this.$alert('模块'+ (this.paper.currentSection) + '开始', '提示', {
-            confirmButtonText: '确定',
-            callback: () => {
-              this.$router.push({path: '/app/doTest/' + this.paper.id})
-            }
-        })
+        this.dialogVisible = true;
     },
     jump() {
         this.$confirm('确认跳过休息?', '提示', {confirmButtonText: '确定',cancelButtonText: '取消',type: 'warning'}).then(() => {
           this.jumpOver();
         }).catch(() => {})
+    },
+    handleClose(){
+        this.$router.push({path: '/app/doTest/' + this.paper.id})
     }
   },
   watch: {

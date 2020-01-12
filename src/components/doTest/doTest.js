@@ -20,9 +20,11 @@ export default {
             currentSection: 1,
             indexRange: [{min: 0,max: 1}],
             leftTimeSec: 3600
-        },          
+        },
         largestHeight: 60,
-        ansOpacity: '0'
+        ansOpacity: '0',
+        dialogVisible1: false,
+        dialogVisible2: false,
       }
     },
     created() {
@@ -61,7 +63,7 @@ export default {
                 }, 1000);
                 let ansList = this.paper.questions[this.paper.currentQuestion].ans?this.paper.questions[this.paper.currentQuestion].ans.split(','):[];
                 this.paper.questions[this.paper.currentQuestion].options.forEach(item => {
-                    item.choose = ansList.indexOf(item.id) != -1;
+                    item.choose = ansList.indexOf(String(item.id)) != -1;
                 })
                 //设置当前题目页
                 this.changePage(this.paper.currentQuestion,'first');
@@ -156,56 +158,11 @@ export default {
             clearInterval(this.interval);
             clearInterval(this.singleInterval);
             if(this.paper.currentSection < this.paper.indexRange.length){
-                this.$alert('模块'+ (this.paper.currentSection) + '结束!', '提示', {
-                    confirmButtonText: '确定',
-                    callback: () => {
-                        this.paper.currentSection++;
-                        this.leftTimeSec = 60 * parseInt(this.paper.sectionDurations.split(',')[this.paper.currentSection - 1]);
-                        this.paper.leftTimeSec = this.leftTimeSec;
-                        this.paper.currentQuestion = this.paper.indexRange[this.paper.currentSection - 1].min;
-                        localStorage.setItem('testPaper' + this.paper.id, JSON.stringify(this.paper));
-                        this.$router.push({path: '/app/restPage/'+this.paper.id})
-                    }
-                })
+                this.dialogVisible1 = true;
             }
             else {
                 localStorage.setItem('testPaper' + this.paper.id, JSON.stringify(this.paper));
-                this.$alert('您已完成此次测试，请耐心等待我们的专业老师与您沟通测试结果，助您进步！', '提示', {
-                    confirmButtonText: '确定',
-                    callback: () => {
-                        let commitData = {
-                            "name": this.paper.name,
-                            "pid": this.paper.id,
-                            "uid": this.$store.state.loginUser.id,
-                            "answers": []
-                        }
-                        for (let indexs = 0;indexs < this.paper.questions.length; indexs++){
-                            let obj = {
-                                "number": this.paper.questions[indexs].number,
-                                "options": '',
-                                "qid": this.paper.questions[indexs].id,
-                                "useTime": this.paper.questions[indexs].usetime
-                            }
-                            if(!this.paper.questions[indexs].ans){this.paper.questions[indexs].ans = '';}
-                            let ansList = this.paper.questions[indexs].ans.split(',').map(Number);
-                            this.paper.questions[indexs].options.forEach(item => {
-                                if(ansList.indexOf(item.id) != -1){
-                                    obj.options += this.allOptionList[item.oindex];
-                                }
-                            })
-                            commitData.answers.push(obj)
-                        }
-                        console.log(commitData);
-                        commitPaper(commitData).then((res) => {
-                            if(res.result == true){
-                                this.$router.push({path: '/app/testResult/' + res.t.score + '/' + 100})
-                            }
-                            else {
-                                // console.log("error");
-                            }
-                        });
-                    }
-                })
+                this.dialogVisible2 = true;
             }
         },
         setIndexRange() {
@@ -236,6 +193,47 @@ export default {
                     return;
                 }
             }, 100)
+        },
+        handleClose1(){
+            this.paper.currentSection++;
+            this.leftTimeSec = 60 * parseInt(this.paper.sectionDurations.split(',')[this.paper.currentSection - 1]);
+            this.paper.leftTimeSec = this.leftTimeSec;
+            this.paper.currentQuestion = this.paper.indexRange[this.paper.currentSection - 1].min;
+            localStorage.setItem('testPaper' + this.paper.id, JSON.stringify(this.paper));
+            this.$router.push({path: '/app/restPage/'+this.paper.id})
+        },
+        handleClose2(){
+            let commitData = {
+                "name": this.paper.name,
+                "pid": this.paper.id,
+                "uid": this.$store.state.loginUser.id,
+                "answers": []
+            }
+            for (let indexs = 0;indexs < this.paper.questions.length; indexs++){
+                let obj = {
+                    "number": this.paper.questions[indexs].number,
+                    "options": '',
+                    "qid": this.paper.questions[indexs].id,
+                    "useTime": this.paper.questions[indexs].usetime
+                }
+                if(!this.paper.questions[indexs].ans){this.paper.questions[indexs].ans = '';}
+                let ansList = this.paper.questions[indexs].ans.split(',').map(Number);
+                this.paper.questions[indexs].options.forEach(item => {
+                    if(ansList.indexOf(item.id) != -1){
+                        obj.options += this.allOptionList[item.oindex];
+                    }
+                })
+                commitData.answers.push(obj)
+            }
+            console.log(commitData);
+            commitPaper(commitData).then((res) => {
+                if(res.result == true){
+                    this.$router.push({path: '/app/testResult/' + res.t.score + '/' + 100})
+                }
+                else {
+                    // console.log("error");
+                }
+            });
         }
     },
     watch: {
