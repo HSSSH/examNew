@@ -50,16 +50,16 @@
             </div>
         </div>
     </div>
-    <div class="material-part" v-if="paper.sections[paper.currentSection - 1].hasMaterial" v-better-scroll>
-        <div>
+    <div class="material-part" v-if="paper.sections[paper.currentSection - 1].hasMaterial">
+        <!-- <div> -->
             <div class="triangle-top"><span>材</span><span>料</span></div>
             <div>
                 <div v-html="paper.sections[paper.currentSection - 1].material" class="material-html"></div>
             </div>
-        </div>
+        <!-- </div> -->
     </div>
-    <div class="scroll-part" :class="{'halfScreen':paper.sections[paper.currentSection - 1].hasMaterial}" v-better-scroll>
-        <div>
+    <div class="scroll-part" :class="{'halfScreen':paper.sections[paper.currentSection - 1].hasMaterial}">
+        <!-- <div> -->
             <div class="progress-part">
                 <span>答题进度</span>
                 <div>
@@ -84,7 +84,18 @@
                     </div>
                 </div>
                 <div>
-                    <div class="answer-area" :style="{'height':largestHeight + 'px','opacity':ansOpacity}" v-for="answer in paper.questions[paper.currentQuestion].options" 
+                    <!-- <div class="answer-area" :style="{'height':largestHeight + 'px','opacity':ansOpacity}" v-for="answer in paper.questions[paper.currentQuestion].options" 
+                    @click="chooseCorrect(answer,paper.questions[paper.currentQuestion].options)" :class="{'backChoose':answer.choose}">
+                        <div :class="{'correct':answer.choose}">
+                            <i :class="{'multiChooseType':paper.questions[paper.currentQuestion].correctNum > 1}">
+                                <img src="@/images/doTest/tick-up.png" v-if="answer.choose">
+                            </i>
+                            <label>{{allOptionList[answer.oindex]}}</label>
+                        </div>
+                        <div v-html="answer.content" class="answer-html" ref="htmlContent">
+                        </div>
+                    </div> -->
+                    <div class="answer-area2" v-for="answer in paper.questions[paper.currentQuestion].options" 
                     @click="chooseCorrect(answer,paper.questions[paper.currentQuestion].options)" :class="{'backChoose':answer.choose}">
                         <div :class="{'correct':answer.choose}">
                             <i :class="{'multiChooseType':paper.questions[paper.currentQuestion].correctNum > 1}">
@@ -107,7 +118,7 @@
                     <span id="nextRight"><img src="@/images/doTest/next.png"></span>
                 </button>
             </div>
-        </div>
+        <!-- </div> -->
     </div>
     <el-dialog
         title="提示"
@@ -126,7 +137,7 @@
         :before-close="handleClose2">
         <span>您已完成此次测试，请耐心等待我们的专业老师与您沟通测试结果，助您进步！</span>
         <span slot="footer" class="dialog-footer">
-            <el-button type="primary" @click="handleClose2">确 定</el-button>
+            <el-button type="primary" :loading="loading" @click="handleClose2">{{loading?'请稍等':'确 定'}}</el-button>
         </span>
     </el-dialog>
     <!-- <div class="move-calc" v-show="data.showCalculator" v-include="'partials/dialogWindow/calculator.html'"></div> -->

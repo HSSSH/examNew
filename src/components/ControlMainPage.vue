@@ -57,14 +57,18 @@
             <el-submenu index="1">
                 <template slot="title">
                     <i class="el-icon-menu"></i>
-                    <span>导航一</span>
+                    <span>已测试</span>
                 </template>
-                <el-menu-item index="1-1" @click="jumpState('/ctrlApp/ctrlMainPage/paperList')">试卷列表</el-menu-item>
-                <el-menu-item index="1-2" @click="jumpState('/ctrlApp/ctrlMainPage/userList')">选项2</el-menu-item>
+                <!-- <el-menu-item index="1-1" @click="jumpState('/ctrlApp/ctrlMainPage/paperList')">测试报告</el-menu-item> -->
+                <el-menu-item index="1-2" @click="jumpState('/ctrlApp/ctrlMainPage/paperListSimple')">简单报告</el-menu-item>
             </el-submenu>
-            <el-menu-item index="2">
+            <el-menu-item index="2" @click="jumpState('/ctrlApp/ctrlMainPage/docList')">
                 <i class="el-icon-setting"></i>
-                <span slot="title">导航二</span>
+                <span slot="title">试卷</span>
+            </el-menu-item>
+            <el-menu-item index="3" @click="jumpState('/ctrlApp/ctrlMainPage/userList')">
+                <i class="el-icon-setting"></i>
+                <span slot="title">用户</span>
             </el-menu-item>
         </el-menu>
     </div>
@@ -79,20 +83,22 @@ export default {
   components: {
   },
   data () {
-      return {}
+      return {
+
+      }
   },
   created() {
     
   },
   methods: {
     handleOpen(key, keyPath) {
-        console.log(key, keyPath);
     },
     handleClose(key, keyPath) {
-        console.log(key, keyPath);
     },
     jumpState(path){
-        this.$router.push({path: path})
+        if(path != this.$route.path) {
+            this.$router.push({path: path})
+        }
     },
     logout(){
       logout().then((res) => {

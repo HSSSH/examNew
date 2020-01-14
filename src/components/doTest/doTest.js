@@ -16,15 +16,16 @@ export default {
         allOptionList: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'],
         paper: {            //整张试卷数据
             questions: [{}],
+            sections: [{}],
             currentQuestion: 0,
             currentSection: 1,
             indexRange: [{min: 0,max: 1}],
             leftTimeSec: 3600
         },
         largestHeight: 60,
-        ansOpacity: '0',
         dialogVisible1: false,
         dialogVisible2: false,
+        loading:false
       }
     },
     created() {
@@ -52,8 +53,8 @@ export default {
     },
     methods: {
         loadPaper(paperId) {
-            if(localStorage.getItem('testPaper' + paperId)){
-                this.paper = JSON.parse(localStorage.getItem('testPaper' + paperId));
+            if(localStorage.getItem('testPaper%' + this.$store.state.loginUser.id + '%' + paperId)){
+                this.paper = JSON.parse(localStorage.getItem('testPaper%' + this.$store.state.loginUser.id + '%' + paperId));
                 //设置时间
                 this.leftTimeSec = this.paper.leftTimeSec;
                 //开始倒计时
@@ -135,22 +136,23 @@ export default {
                     }
                     else this.paper.questions[this.paper.currentQuestion].usetime++;
                 }, 1000);
-                this.ansOpacity = '0';
                 setTimeout(() => {
-                    this.judgeLagestHeight((height) => {
-                        console.log(height);
-                        this.largestHeight = height > 60?height:60;
-                        this.ansOpacity = '1';
-                        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
-                    })
-                },0);
+                    MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+                },100);
+                // setTimeout(() => {
+                    // this.judgeLagestHeight((height) => {
+                        // console.log(height);
+                        // this.largestHeight = height > 60?height:60;
+                        // MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+                    // })
+                // },0);
             }
         },
         quitTest(){
             this.$confirm('确认放弃?', '提示', {confirmButtonText: '确定',cancelButtonText: '取消',type: 'warning'}).then(() => {
                 clearInterval(this.interval);
                 clearInterval(this.singleInterval);
-                localStorage.removeItem('testPaper' + this.$route.params.examId);
+                localStorage.removeItem('testPaper%' + this.$store.state.loginUser.id + '%' + this.$route.params.examId);
                 this.$router.push({path: '/app/mainPage/abilityTest'})
             }).catch(() => {})
         },
@@ -161,7 +163,7 @@ export default {
                 this.dialogVisible1 = true;
             }
             else {
-                localStorage.setItem('testPaper' + this.paper.id, JSON.stringify(this.paper));
+                localStorage.setItem('testPaper%' + this.$store.state.loginUser.id + '%' + this.paper.id, JSON.stringify(this.paper));
                 this.dialogVisible2 = true;
             }
         },
@@ -176,33 +178,36 @@ export default {
                 })
             })
         },
-        judgeLagestHeight(callback){
-            let timer = setInterval(() => {
-                let stopLoop = true;
-                this.$refs.htmlContent.forEach((item) => {
-                    if(item.getElementsByTagName("img").length && item.getElementsByTagName("img")[0].clientHeight == 0){
-                        stopLoop = false;
-                    }
-                })
-                if(stopLoop){
-                    let maxHeight = Math.max(...this.$refs.htmlContent.map((item) => {
-                        return item.clientHeight;
-                    }));
-                    callback(maxHeight);
-                    clearInterval(timer);
-                    return;
-                }
-            }, 100)
-        },
+        //遍历选项高度都设置成一样高
+        // judgeLagestHeight(callback){
+        //     let timer = setInterval(() => {
+        //         let stopLoop = true;
+        //         this.$refs.htmlContent.forEach((item) => {
+        //             if(item.getElementsByTagName("img").length && item.getElementsByTagName("img")[0].clientHeight == 0){
+        //                 stopLoop = false;
+        //             }
+        //         })
+        //         if(stopLoop){
+        //             let maxHeight = Math.max(...this.$refs.htmlContent.map((item) => {
+        //                 return item.clientHeight;
+        //             }));
+        //             callback(maxHeight);
+        //             clearInterval(timer);
+        //             return;
+        //         }
+        //     }, 100)
+        // },
         handleClose1(){
             this.paper.currentSection++;
             this.leftTimeSec = 60 * parseInt(this.paper.sectionDurations.split(',')[this.paper.currentSection - 1]);
             this.paper.leftTimeSec = this.leftTimeSec;
             this.paper.currentQuestion = this.paper.indexRange[this.paper.currentSection - 1].min;
-            localStorage.setItem('testPaper' + this.paper.id, JSON.stringify(this.paper));
+            localStorage.setItem('testPaper%' + this.$store.state.loginUser.id + '%' + this.paper.id, JSON.stringify(this.paper));
             this.$router.push({path: '/app/restPage/'+this.paper.id})
         },
         handleClose2(){
+            if(this.loading) return;
+            this.loading = true;
             let commitData = {
                 "name": this.paper.name,
                 "pid": this.paper.id,
@@ -228,10 +233,14 @@ export default {
             console.log(commitData);
             commitPaper(commitData).then((res) => {
                 if(res.result == true){
+                    this.loading = false;
+                    localStorage.removeItem('testPaper%' + this.$store.state.loginUser.id + '%' + this.$route.params.examId);
                     this.$router.push({path: '/app/testResult/' + res.t.score + '/' + 100})
                 }
                 else {
-                    // console.log("error");
+                    this.loading = false;
+                    this.dialogVisible2 = false;
+                    alert('提交失败！');
                 }
             });
         }
@@ -242,7 +251,7 @@ export default {
                 this.submitMyAnswer();
             }
             else if(this.paper.id) {
-                localStorage.setItem('testPaper' + this.paper.id, JSON.stringify(this.paper));
+                localStorage.setItem('testPaper%' + this.$store.state.loginUser.id + '%' + this.paper.id, JSON.stringify(this.paper));
                 //还剩10分钟或5分钟时闪烁一下计时器
                 if(val == 10*60 || val == 5*60){
                     let count = 0;

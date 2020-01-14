@@ -8,13 +8,17 @@
                 {{scope.$index + 1}}
             </template>
         </el-table-column>
-        <el-table-column prop="uid" label="用户ID" width="180">
+        <el-table-column prop="uname" label="用户名" width="180">
+        </el-table-column>
+        <el-table-column prop="region" label="校区">
         </el-table-column>
         <el-table-column prop="name" label="试卷">
         </el-table-column>
+        <el-table-column prop="score" label="得分">
+        </el-table-column>
         <el-table-column label="操作">
             <template slot-scope="scope">
-                <el-button size="mini" @click="checkReport(scope.row.pid,scope.row.uid)">查看</el-button>
+                <el-button size="mini" @click="checkReport(scope.row)">查看</el-button>
             </template>
         </el-table-column>
     </el-table>
@@ -22,10 +26,10 @@
 </template>
 
 <script>
-import { getCommitPaperList } from '@/api/ctrlPaper';
+import { getCommitPaperListSimple } from '@/api/ctrlPaper';
 
 export default {
-  name: 'PageList',
+  name: 'PageListSimple',
   components: {
   },
   data () {
@@ -38,12 +42,12 @@ export default {
   },
   methods: {
       getCommitPaperResult(){
-        getCommitPaperList().then((data) => {
-          this.tableData = data;
+        getCommitPaperListSimple().then((data) => {
+          this.tableData = data.t;
         })
       },
-      checkReport(pid,uid){
-          this.$router.push({path: '/ctrlApp/report/' + pid + '/' + uid});
+      checkReport(item){
+          this.$router.push({path: '/ctrlApp/report3/' + item.pid + '/' + item.uid});
       }
   }
 }

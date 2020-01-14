@@ -23,9 +23,12 @@ const GuidePage = () => import(/* webpackChunkName: "group-doTest"*/'@/component
 const ControlApp = () => import(/* webpackChunkName: "group-controlApp"*/'@/ControlApp');
 const ControlMainPage = () => import(/* webpackChunkName: "group-controlApp"*/'@/components/ControlMainPage');
 const PaperList = () => import(/* webpackChunkName: "group-controlApp"*/'@/components/controlMainPage/PaperList');
+const PaperListSimple = () => import(/* webpackChunkName: "group-controlApp"*/'@/components/controlMainPage/PaperListSimple');
+const DocList = () => import(/* webpackChunkName: "group-controlApp"*/'@/components/controlMainPage/DocList');
 const UserList = () => import(/* webpackChunkName: "group-controlApp"*/'@/components/controlMainPage/UserList');
 const Report = () => import(/* webpackChunkName: "group-controlApp"*/'@/components/controlOther/Report');
 const Report2 = () => import(/* webpackChunkName: "group-controlApp"*/'@/components/controlOther/Report2');
+const Report3 = () => import(/* webpackChunkName: "group-controlApp"*/'@/components/controlOther/Report3');
 const ControlLogin = () => import(/* webpackChunkName: "group-controlApp"*/'@/login/ControlLogin');
 
 import store from '@/store/index';
@@ -127,15 +130,23 @@ export default new Router({
             path: 'ctrlMainPage',
             name: 'ControlMainPage',
             component: ControlMainPage,
-            redirect: { name: 'PaperList' },
+            redirect: { name: 'PaperListSimple' },
             children: [{
                 path: 'paperList',
                 name: 'PaperList',
                 component: PaperList,
             },{
+                path: 'paperListSimple',
+                name: 'PaperListSimple',
+                component: PaperListSimple,
+            },{
                 path: 'userList',
                 name: 'UserList',
                 component: UserList,
+            },{
+                path: 'docList',
+                name: 'DocList',
+                component: DocList,
             }],
         },{
             path: 'report/:pid/:uid',
@@ -145,6 +156,10 @@ export default new Router({
             path: 'report2',
             name: 'Report2',
             component: Report2,
+        },{
+            path: 'report3/:pid/:uid',
+            name: 'Report3',
+            component: Report3,
         }]
     },{
         path: '/ctrlLogin',

@@ -84,8 +84,8 @@ export default {
   },
   created() {
     if (this.$route.params.examId) {
-      if(localStorage.getItem('testPaper' + this.$route.params.examId)) {
-          this.paper = JSON.parse(localStorage.getItem('testPaper' + this.$route.params.examId));
+      if(localStorage.getItem('testPaper%' + this.$store.state.loginUser.id + '%' + this.$route.params.examId)) {
+          this.paper = JSON.parse(localStorage.getItem('testPaper%' + this.$store.state.loginUser.id + '%' + this.$route.params.examId));
           if(!this.paper.breakTimeSec){
               this.breakTimeSec = 60 * parseInt(this.paper.sectionRests.split(',')[this.paper.currentSection - 2]);
               Object.assign(this.paper,{breakTimeSec:this.breakTimeSec})
@@ -104,7 +104,7 @@ export default {
     jumpOver(){
         clearInterval(this.interval);
         delete this.paper.breakTimeSec;
-        localStorage.setItem('testPaper' + this.paper.id, JSON.stringify(this.paper));
+        localStorage.setItem('testPaper%' + this.$store.state.loginUser.id + '%' + this.paper.id, JSON.stringify(this.paper));
         this.dialogVisible = true;
     },
     jump() {
@@ -122,7 +122,7 @@ export default {
               this.jumpOver();
           }
           else if(this.paper.id) {
-              localStorage.setItem('testPaper' + this.paper.id, JSON.stringify(this.paper));
+              localStorage.setItem('testPaper%' + this.$store.state.loginUser.id + '%' + this.paper.id, JSON.stringify(this.paper));
           }
       }
   },
