@@ -121,6 +121,7 @@
         <!-- </div> -->
     </div>
     <el-dialog
+        class="dialog-style"
         title="提示"
         :visible.sync="dialogVisible1"
         width="300px"
@@ -131,9 +132,10 @@
         </span>
     </el-dialog>
     <el-dialog
+        class="dialog-style"
         title="提示"
         :visible.sync="dialogVisible2"
-        width="400px"
+        width="440px"
         :before-close="handleClose2">
         <span>您已完成此次测试，请耐心等待我们的专业老师与您沟通测试结果，助您进步！</span>
         <span slot="footer" class="dialog-footer">

@@ -242,6 +242,10 @@ export default {
                     this.dialogVisible2 = false;
                     alert('提交失败！');
                 }
+            }).catch((res) => {
+                this.loading = false;
+                this.dialogVisible2 = false;
+                alert('提交失败！');
             });
         }
     },

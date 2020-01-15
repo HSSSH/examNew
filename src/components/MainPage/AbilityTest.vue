@@ -61,10 +61,12 @@
           background-size: 100% 100%;
           width: 280px;
           margin-right: -55px;
+          filter:grayscale(1);
           label {
             top: 30px;
             left: 105px;
-            color: #ea7677;
+            // color: #ea7677;
+            color: #E8E8E8;
             i {
               background: #ea7677;
             }
@@ -81,10 +83,12 @@
           background-size: 100% 100%;
           width: 228px;
           margin-right: -5px;
+          filter:grayscale(1);
           label {
             top: 30px;
             left: 65px;
-            color: #f6bb6d;
+            // color: #f6bb6d;
+            color: #E8E8E8;
             i {
               background: #f6bb6d;
             }
@@ -120,10 +124,12 @@
           background: url("../../images/mainPage/card4.png") no-repeat center;
           background-size: 100% 100%;
           width: 280px;
+          filter:grayscale(1);
           label {
             top: 30px;
             left: 60px;
-            color: #aa8fd2;
+            // color: #aa8fd2;
+            color: #E8E8E8;
             i {
               background: #aa8fd2;
             }
@@ -269,8 +275,8 @@
           <div class="paper-card" v-for="item in paperList" :key="item.id">
             <p>
               {{item.name}}
-              <br />能力测试
             </p>
+            <br/>
             <button @click="startTest(item)">马上进入</button>
           </div>
         </div>

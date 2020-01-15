@@ -88,7 +88,7 @@
       <div>
         {{currentUser.name}},欢迎你
         <ul>
-          <li @click="goSinglePage">个人主页</li>
+          <!-- <li @click="goSinglePage">个人主页</li> -->
           <li>
             <a @click="logout">退出</a>
           </li>
