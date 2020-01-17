@@ -44,6 +44,17 @@
   color: #27A4D4;
   border-radius: 8px;
 }
+.dialog-style{
+  /deep/.el-dialog__title{
+    color: #5F8CDE;
+    font-size: 25px;
+  }
+  /deep/.el-dialog__body{
+    text-align: center;
+    color: #5F8CDE;
+    font-size: 22px;
+  }
+}
 </style>
 <template>
 <div class="rest">
@@ -57,11 +68,13 @@
         <button class="bt-type3" @click="jump()">跳过休息</button>
     </div>
     <el-dialog
+        class="dialog-style"
         title="提示"
         :visible.sync="dialogVisible"
         width="300px"
         :before-close="handleClose">
-        <span>模块{{paper.currentSection}}开始!</span>
+        <!-- <span>模块{{paper.currentSection}}开始!</span> -->
+        <span>{{tempModeName[paper.currentSection]}}开始!</span>
         <span slot="footer" class="dialog-footer">
             <el-button type="primary" @click="handleClose">确 定</el-button>
         </span>
@@ -79,7 +92,8 @@ export default {
       interval: {},
       breakTimeSec: 60,  //初始默认60s
       paper: {},
-      dialogVisible: false
+      dialogVisible: false,
+      tempModeName:{'1':"A卷",'2':"B卷",'3':"C卷"}
     }
   },
   created() {

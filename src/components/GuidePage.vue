@@ -325,7 +325,7 @@ export default {
       return {
         remarkStr:'',
         step:1,
-        testPageStep:1
+        testPageStep:1,
 	    }
   },
   created() {

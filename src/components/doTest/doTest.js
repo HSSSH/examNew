@@ -25,7 +25,8 @@ export default {
         largestHeight: 60,
         dialogVisible1: false,
         dialogVisible2: false,
-        loading:false
+        loading:false,
+        tempModeName:{'1':"A卷",'2':"B卷",'3':"C卷"}
       }
     },
     created() {

@@ -4,7 +4,8 @@
             <button class="quit-bt" @click="quitTest">放弃</button>
         </div>
         <div>
-            <label>模块{{paper.currentSection}}</label>
+            <!-- <label>模块{{paper.currentSection}}</label> -->
+            <label>{{tempModeName[paper.currentSection]}}</label>
             <i class="split-line"></i>
             <label>{{paper.questions[paper.currentQuestion].correctNum > 1?'多选题':'单选题'}}</label>
         </div>
@@ -39,7 +40,8 @@
                 <p style="background: #F39B77;color: white;border: solid 1px black">标记</p>
             </div>
             <div class="answer-card">
-                <p>模块{{paper.currentSection}}</p>
+                <!-- <p>模块{{paper.currentSection}}</p> -->
+                <p>{{tempModeName[paper.currentSection]}}</p>
                 <button v-for="(item,index) in paper.questions" v-show="paper.currentSection == item.section || paper.currentSection == item.section * -1" @click="changePage(index)"
                         :class="{'hasAns':(paper.questions[index].ans != null && paper.questions[index].ans != ''),'flagColor':paper.questions[index].flag}">
                     {{index - paper.indexRange[paper.currentSection - 1].min + 1}}
@@ -126,7 +128,8 @@
         :visible.sync="dialogVisible1"
         width="300px"
         :before-close="handleClose1">
-        <span>模块{{paper.currentSection}}结束!</span>
+        <!-- <span>模块{{paper.currentSection}}结束!</span> -->
+        <span>时间结束，停止作答!</span>
         <span slot="footer" class="dialog-footer">
             <el-button type="primary" @click="handleClose1">确 定</el-button>
         </span>
