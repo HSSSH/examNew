@@ -86,17 +86,6 @@
                     </div>
                 </div>
                 <div>
-                    <!-- <div class="answer-area" :style="{'height':largestHeight + 'px','opacity':ansOpacity}" v-for="answer in paper.questions[paper.currentQuestion].options" 
-                    @click="chooseCorrect(answer,paper.questions[paper.currentQuestion].options)" :class="{'backChoose':answer.choose}">
-                        <div :class="{'correct':answer.choose}">
-                            <i :class="{'multiChooseType':paper.questions[paper.currentQuestion].correctNum > 1}">
-                                <img src="@/images/doTest/tick-up.png" v-if="answer.choose">
-                            </i>
-                            <label>{{allOptionList[answer.oindex]}}</label>
-                        </div>
-                        <div v-html="answer.content" class="answer-html" ref="htmlContent">
-                        </div>
-                    </div> -->
                     <div class="answer-area2" v-for="answer in paper.questions[paper.currentQuestion].options" 
                     @click="chooseCorrect(answer,paper.questions[paper.currentQuestion].options)" :class="{'backChoose':answer.choose}">
                         <div :class="{'correct':answer.choose}">
@@ -105,7 +94,9 @@
                             </i>
                             <label>{{allOptionList[answer.oindex]}}</label>
                         </div>
-                        <div v-html="answer.content" class="answer-html" ref="htmlContent">
+                        <!-- <div v-html="answer.content" class="answer-html" ref="htmlContent"> -->
+                        <!-- </div> -->
+                        <div class="answer-html" ref="htmlContent">{{answer.updatetime}}
                         </div>
                     </div>
                 </div>

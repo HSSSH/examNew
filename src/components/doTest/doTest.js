@@ -1,4 +1,4 @@
-import { getPaperById,commitPaper } from '@/api/exam';
+import { getPaperById,commitPaper,checkFirstTest } from '@/api/exam';
 export default {
     name: 'DoTest',
     components: {
@@ -26,7 +26,7 @@ export default {
         dialogVisible1: false,
         dialogVisible2: false,
         loading:false,
-        tempModeName:{'1':"A卷",'2':"B卷",'3':"C卷"}
+        tempModeName:{'1':"A卷",'2':"B卷",'3':"C卷"},
       }
     },
     created() {
@@ -35,7 +35,13 @@ export default {
         oScript.src = 'mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
         document.body.appendChild(oScript);
         if (this.$route.params.examId) {
-            this.loadPaper(this.$route.params.examId);
+            checkFirstTest(this.$route.params.examId, this.$store.state.loginUser.id).then(res => {
+                if (res.result) {
+                    this.$router.replace({ path: "/app/mainPage/abilityTest"});
+                } else {
+                    this.loadPaper(this.$route.params.examId);
+                }
+              });
         }
     },
     mounted() {
@@ -127,10 +133,10 @@ export default {
                 $event.stopPropagation();
             }
             if(page >= this.paper.indexRange[this.paper.currentSection - 1].min && page <= this.paper.indexRange[this.paper.currentSection - 1].max){
+                this.paper.currentQuestion = page;
                 if(flag != 'first') {
                     clearInterval(this.singleInterval);
                 }
-                this.paper.currentQuestion = page;
                 this.singleInterval = setInterval(() => {
                     if(!this.paper.questions[this.paper.currentQuestion].usetime){
                         this.paper.questions[this.paper.currentQuestion].usetime = 1;
